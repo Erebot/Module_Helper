@@ -72,7 +72,7 @@ extends ErebotModuleBase
         $reflector  = new ReflectionParameter($callback, 0);
         $cls        = $reflector->getClass();
         if ($cls === NULL || !$cls->implementsInterface('iErebotEventMessageCapable'))
-            throw new EErebotInvalidValue('Invalid signature');
+            throw new Erebot_InvalidValueException('Invalid signature');
 
         $this->_helpCallbacks[$moduleName] =& $callback;
         return TRUE;
