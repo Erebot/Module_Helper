@@ -16,8 +16,8 @@
     along with Erebot.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-class   ErebotModule_Helper
-extends ErebotModuleBase
+class   Erebot_Module_Helper
+extends Erebot_Module_Base
 {
     static protected $_metadata = array(
         'requires'  =>  array('TriggerRegistry'),
@@ -30,18 +30,22 @@ extends ErebotModuleBase
     public function reload($flags)
     {
         if (!($flags & self::RELOAD_INIT)) {
-            $registry =&    $this->_connection->getModule('TriggerRegistry',
-                                ErebotConnection::MODULE_BY_NAME);
-            $matchAny = ErebotUtils::getVStatic($registry, 'MATCH_ANY');
+            $registry =& $this->_connection->getModule(
+                'Erebot_Module_TriggerRegistry',
+                Erebot_Connection::MODULE_BY_NAME
+            );
+            $matchAny = Erebot_Utils::getVStatic($registry, 'MATCH_ANY');
 
             $this->_connection->removeEventHandler($this->_handler);
             $registry->freeTriggers($this->_trigger, $matchAny);
         }
 
         if ($flags & self::RELOAD_HANDLERS) {
-            $registry   =&  $this->_connection->getModule('TriggerRegistry',
-                                ErebotConnection::MODULE_BY_NAME);
-            $matchAny  =   ErebotUtils::getVStatic($registry, 'MATCH_ANY');
+            $registry =& $this->_connection->getModule(
+                'TriggerRegistry',
+                Erebot_Connection::MODULE_BY_NAME
+            );
+            $matchAny  =   Erebot_Utils::getVStatic($registry, 'MATCH_ANY');
 
             $trigger        = $this->parseString('trigger', 'help');
             $this->_trigger = $registry->registerTriggers($trigger, $matchAny);
@@ -49,10 +53,10 @@ extends ErebotModuleBase
                 throw new Exception($this->_translator->gettext(
                     'Could not register Help trigger'));
 
-            $filter         = new ErebotTextFilter($this->_mainCfg);
-            $filter->addPattern(ErebotTextFilter::TYPE_STATIC, $trigger, TRUE);
-            $filter->addPattern(ErebotTextFilter::TYPE_WILDCARD, $trigger.' *', TRUE);
-            $this->_handler  = new ErebotEventHandler(
+            $filter         = new Erebot_TextFilter($this->_mainCfg);
+            $filter->addPattern(Erebot_TextFilter::TYPE_STATIC, $trigger, TRUE);
+            $filter->addPattern(Erebot_TextFilter::TYPE_WILDCARD, $trigger.' *', TRUE);
+            $this->_handler  = new Erebot_EventHandler(
                                     array($this, 'handleHelp'),
                                     'iErebotEventMessageText',
                                     NULL, $filter);
@@ -65,22 +69,22 @@ extends ErebotModuleBase
         }
     }
 
-    public function realRegisterHelpMethod(ErebotModuleBase &$module, $callback)
+    public function realRegisterHelpMethod(Erebot_Module_Base &$module, $callback)
     {
         $bot =& $this->_connection->getBot();
         $moduleName = strtolower($bot->moduleClassToName($module));
         $reflector  = new ReflectionParameter($callback, 0);
         $cls        = $reflector->getClass();
-        if ($cls === NULL || !$cls->implementsInterface('iErebotEventMessageCapable'))
+        if ($cls === NULL || !$cls->implementsInterface('Erebot_Interface_Event_MessageCapable'))
             throw new Erebot_InvalidValueException('Invalid signature');
 
         $this->_helpCallbacks[$moduleName] =& $callback;
         return TRUE;
     }
 
-    public function getHelp(iErebotEventMessageText &$event, $words)
+    public function getHelp(Erebot_Interface_Event_TextMessage &$event, $words)
     {
-        if ($event instanceof iErebotEventPrivate) {
+        if ($event instanceof Erebot_Interface_Event_Private) {
             $target = $event->getSource();
             $chan   = NULL;
         }
@@ -104,7 +108,7 @@ otherwise.
 The following modules are loaded: <for from="modules" item="module">
 <b><var name="module"/></b></for>.
 ');
-            $tpl = new ErebotStyling($msg, $translator);
+            $tpl = new Erebot_Styling($msg, $translator);
             $tpl->assign('modules', $modules);
             $tpl->assign('trigger', $trigger);
             $this->sendMessage($target, $tpl->render());
@@ -123,16 +127,16 @@ Use "!<var name="trigger"/> <var name="this"/>" for a list of currently loaded
 modules.
 ');
         $bot =& $this->_connection->getBot();
-        $tpl = new ErebotStyling($msg, $translator);
+        $tpl = new Erebot_Styling($msg, $translator);
         $tpl->assign('this',    $bot->moduleClassToName($this));
         $tpl->assign('trigger', $trigger);
         $this->sendMessage($target, $tpl->render());
         return TRUE;
     }
 
-    public function handleHelp(iErebotEventMessageText &$event)
+    public function handleHelp(Erebot_Interface_Event_TextMessage &$event)
     {
-        if ($event instanceof iErebotEventPrivate) {
+        if ($event instanceof Erebot_Interface_Event_Private) {
             $target = $event->getSource();
             $chan   = NULL;
         }
@@ -162,7 +166,7 @@ modules.
             $msg = $translator->gettext(
                 'No such module <b><var name="module"/></b> '.
                 'or no help available.');
-            $tpl = new ErebotStyling($msg, $translator);
+            $tpl = new Erebot_Styling($msg, $translator);
             $tpl->assign('module', $moduleName);
             return $this->sendMessage($target, $tpl->render());
         }
@@ -190,7 +194,7 @@ modules.
         // We assume no help is available.
         $msg = $translator->gettext('No help available on the given '.
                                     'module or command.');
-        $tpl = new ErebotStyling($msg, $translator);
+        $tpl = new Erebot_Styling($msg, $translator);
         $this->sendMessage($target, $tpl->render());
     }
 }
