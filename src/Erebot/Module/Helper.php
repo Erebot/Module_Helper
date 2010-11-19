@@ -42,7 +42,7 @@ extends Erebot_Module_Base
 
         if ($flags & self::RELOAD_HANDLERS) {
             $registry =& $this->_connection->getModule(
-                'TriggerRegistry',
+                'Erebot_Module_TriggerRegistry',
                 Erebot_Connection::MODULE_BY_NAME
             );
             $matchAny  =   Erebot_Utils::getVStatic($registry, 'MATCH_ANY');
@@ -58,7 +58,7 @@ extends Erebot_Module_Base
             $filter->addPattern(Erebot_TextFilter::TYPE_WILDCARD, $trigger.' *', TRUE);
             $this->_handler  = new Erebot_EventHandler(
                                     array($this, 'handleHelp'),
-                                    'iErebotEventMessageText',
+                                    'Erebot_Interface_Event_TextMessage',
                                     NULL, $filter);
             $this->_connection->addEventHandler($this->_handler);
 
