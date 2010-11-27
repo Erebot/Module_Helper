@@ -31,8 +31,7 @@ extends Erebot_Module_Base
     {
         if (!($flags & self::RELOAD_INIT)) {
             $registry =& $this->_connection->getModule(
-                'Erebot_Module_TriggerRegistry',
-                Erebot_Connection::MODULE_BY_NAME
+                'Erebot_Module_TriggerRegistry'
             );
             $matchAny = Erebot_Utils::getVStatic($registry, 'MATCH_ANY');
 
@@ -42,8 +41,7 @@ extends Erebot_Module_Base
 
         if ($flags & self::RELOAD_HANDLERS) {
             $registry =& $this->_connection->getModule(
-                'Erebot_Module_TriggerRegistry',
-                Erebot_Connection::MODULE_BY_NAME
+                'Erebot_Module_TriggerRegistry'
             );
             $matchAny  =   Erebot_Utils::getVStatic($registry, 'MATCH_ANY');
 
@@ -72,7 +70,7 @@ extends Erebot_Module_Base
     public function realRegisterHelpMethod(Erebot_Module_Base &$module, $callback)
     {
         $bot =& $this->_connection->getBot();
-        $moduleName = strtolower($bot->moduleClassToName($module));
+        $moduleName = strtolower(get_class($module));
         $reflector  = new ReflectionParameter($callback, 0);
         $cls        = $reflector->getClass();
         if ($cls === NULL || !$cls->implementsInterface('Erebot_Interface_Event_MessageCapable'))
@@ -95,7 +93,7 @@ extends Erebot_Module_Base
         $trigger    = $this->parseString('trigger', 'help');
 
         $bot        =&  $this->_connection->getBot();
-        $moduleName =   strtolower($bot->moduleClassToName($this));
+        $moduleName =   strtolower(get_class());
         $nbArgs     =   count($words);
 
         // "!help Helper"
@@ -128,7 +126,7 @@ modules.
 ');
         $bot =& $this->_connection->getBot();
         $tpl = new Erebot_Styling($msg, $translator);
-        $tpl->assign('this',    $bot->moduleClassToName($this));
+        $tpl->assign('this',    get_class());
         $tpl->assign('trigger', $trigger);
         $this->sendMessage($target, $tpl->render());
         return TRUE;
@@ -150,7 +148,7 @@ modules.
         // Just "!help". Emulate "!help Help help".
         if (!count($text)) {
             $bot =& $this->_connection->getBot();
-            $text = array($bot->moduleClassToName($this), 'help');
+            $text = array(get_class(), 'help');
         }
 
         $moduleName = NULL;
