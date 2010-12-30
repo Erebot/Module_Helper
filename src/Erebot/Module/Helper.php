@@ -43,7 +43,7 @@ extends Erebot_Module_Base
             $registry =& $this->_connection->getModule(
                 'Erebot_Module_TriggerRegistry'
             );
-            $matchAny  =   Erebot_Utils::getVStatic($registry, 'MATCH_ANY');
+            $matchAny = Erebot_Utils::getVStatic($registry, 'MATCH_ANY');
 
             $trigger        = $this->parseString('trigger', 'help');
             $this->_trigger = $registry->registerTriggers($trigger, $matchAny);
@@ -51,13 +51,13 @@ extends Erebot_Module_Base
                 throw new Exception($this->_translator->gettext(
                     'Could not register Help trigger'));
 
-            $filter         = new Erebot_TextFilter($this->_mainCfg);
-            $filter->addPattern(Erebot_TextFilter::TYPE_STATIC, $trigger, TRUE);
-            $filter->addPattern(Erebot_TextFilter::TYPE_WILDCARD, $trigger.' *', TRUE);
-            $this->_handler  = new Erebot_EventHandler(
-                                    array($this, 'handleHelp'),
-                                    'Erebot_Interface_Event_TextMessage',
-                                    NULL, $filter);
+            $this->_handler = new Erebot_EventHandler(
+                array($this, 'handleHelp'),
+                'Erebot_Interface_Event_TextMessage'
+            );
+            $this->_handler
+                ->addFilter(new Erebot_TextFilter_Static($trigger, TRUE))
+                ->addFilter(new Erebot_TextFilter_Wildcard($trigger.' *', TRUE));
             $this->_connection->addEventHandler($this->_handler);
 
             // Add help support to Help module.
@@ -67,20 +67,27 @@ extends Erebot_Module_Base
         }
     }
 
-    public function realRegisterHelpMethod(Erebot_Module_Base &$module, $callback)
+    public function realRegisterHelpMethod(
+        Erebot_Module_Base &$module,
+                            $callback
+    )
     {
         $bot =& $this->_connection->getBot();
         $moduleName = strtolower(get_class($module));
         $reflector  = new ReflectionParameter($callback, 0);
         $cls        = $reflector->getClass();
-        if ($cls === NULL || !$cls->implementsInterface('Erebot_Interface_Event_MessageCapable'))
+        if ($cls === NULL || !$cls->implementsInterface(
+            'Erebot_Interface_Event_MessageCapable'))
             throw new Erebot_InvalidValueException('Invalid signature');
 
         $this->_helpCallbacks[$moduleName] =& $callback;
         return TRUE;
     }
 
-    public function getHelp(Erebot_Interface_Event_TextMessage &$event, $words)
+    public function getHelp(
+        Erebot_Interface_Event_TextMessage &$event,
+                                            $words
+    )
     {
         if ($event instanceof Erebot_Interface_Event_Private) {
             $target = $event->getSource();
