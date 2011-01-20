@@ -40,7 +40,7 @@ extends Erebot_Module_Base
         }
 
         if ($flags & self::RELOAD_HANDLERS) {
-            $registry =& $this->_connection->getModule(
+            $registry = $this->_connection->getModule(
                 'Erebot_Module_TriggerRegistry'
             );
             $matchAny = Erebot_Utils::getVStatic($registry, 'MATCH_ANY');
@@ -71,11 +71,11 @@ extends Erebot_Module_Base
     }
 
     public function realRegisterHelpMethod(
-        Erebot_Module_Base &$module,
+        Erebot_Module_Base  $module,
                             $callback
     )
     {
-        $bot =& $this->_connection->getBot();
+        $bot = $this->_connection->getBot();
         $moduleName = strtolower(get_class($module));
         $reflector  = new ReflectionParameter($callback, 0);
         $cls        = $reflector->getClass();
@@ -83,12 +83,12 @@ extends Erebot_Module_Base
             'Erebot_Interface_Event_MessageCapable'))
             throw new Erebot_InvalidValueException('Invalid signature');
 
-        $this->_helpCallbacks[$moduleName] =& $callback;
+        $this->_helpCallbacks[$moduleName] = $callback;
         return TRUE;
     }
 
     public function getHelp(
-        Erebot_Interface_Event_TextMessage &$event,
+        Erebot_Interface_Event_TextMessage  $event,
                                             $words
     )
     {
@@ -102,9 +102,9 @@ extends Erebot_Module_Base
         $translator = $this->getTranslator($chan);
         $trigger    = $this->parseString('trigger', 'help');
 
-        $bot        =&  $this->_connection->getBot();
-        $moduleName =   strtolower(get_class());
-        $nbArgs     =   count($words);
+        $bot        = $this->_connection->getBot();
+        $moduleName = strtolower(get_class());
+        $nbArgs     = count($words);
 
         // "!help Helper"
         if ($nbArgs == 1 && $words[0] == $moduleName) {
@@ -134,7 +134,7 @@ Provides help about a particular module or command.
 Use "!<var name="trigger"/> <var name="this"/>" for a list of currently loaded
 modules.
 ');
-        $bot =& $this->_connection->getBot();
+        $bot = $this->_connection->getBot();
         $tpl = new Erebot_Styling($msg, $translator);
         $tpl->assign('this',    get_class());
         $tpl->assign('trigger', $trigger);
@@ -142,7 +142,7 @@ modules.
         return TRUE;
     }
 
-    public function handleHelp(Erebot_Interface_Event_TextMessage &$event)
+    public function handleHelp(Erebot_Interface_Event_TextMessage $event)
     {
         if ($event instanceof Erebot_Interface_Event_Private) {
             $target = $event->getSource();
@@ -157,8 +157,8 @@ modules.
 
         // Just "!help". Emulate "!help Help help".
         if (!count($text)) {
-            $bot =& $this->_connection->getBot();
-            $text = array(get_class(), 'help');
+            $bot    = $this->_connection->getBot();
+            $text   = array(get_class(), 'help');
         }
 
         $moduleName = NULL;
