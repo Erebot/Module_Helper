@@ -27,7 +27,7 @@ extends Erebot_Module_Base
     protected $_helpTopics;
     protected $_helpCallbacks;
 
-    public function reload($flags)
+    public function _reload($flags)
     {
         if (!($flags & self::RELOAD_INIT)) {
             $registry =& $this->_connection->getModule(
@@ -68,6 +68,10 @@ extends Erebot_Module_Base
             // is not registered for this connection yet.
             $this->realRegisterHelpMethod($this, array($this, 'getHelp'));
         }
+    }
+
+    protected function _unload()
+    {
     }
 
     public function realRegisterHelpMethod(
