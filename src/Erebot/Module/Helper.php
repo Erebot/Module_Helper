@@ -54,7 +54,7 @@ extends Erebot_Module_Base
             $this->_handler = new Erebot_EventHandler(
                 array($this, 'handleHelp'),
                 new Erebot_Event_Match_All(
-                    new Erebot_Event_Match_InstanceOf('Erebot_Interface_Event_TextMessage'),
+                    new Erebot_Event_Match_InstanceOf('Erebot_Interface_Event_Base_TextMessage'),
                     new Erebot_Event_Match_Any(
                         new Erebot_Event_Match_TextStatic($trigger, TRUE),
                         new Erebot_Event_Match_TextWildcard($trigger.' *', TRUE)
@@ -84,7 +84,7 @@ extends Erebot_Module_Base
         $reflector  = new ReflectionParameter($callback, 0);
         $cls        = $reflector->getClass();
         if ($cls === NULL || !$cls->implementsInterface(
-            'Erebot_Interface_Event_MessageCapable'))
+            'Erebot_Interface_Event_Base_MessageCapable'))
             throw new Erebot_InvalidValueException('Invalid signature');
 
         $this->_helpCallbacks[$moduleName] = $callback;
@@ -92,11 +92,11 @@ extends Erebot_Module_Base
     }
 
     public function getHelp(
-        Erebot_Interface_Event_TextMessage  $event,
-                                            $words
+        Erebot_Interface_Event_Base_TextMessage $event,
+                                                $words
     )
     {
-        if ($event instanceof Erebot_Interface_Event_Private) {
+        if ($event instanceof Erebot_Interface_Event_Base_Private) {
             $target = $event->getSource();
             $chan   = NULL;
         }
@@ -146,9 +146,9 @@ modules.
         return TRUE;
     }
 
-    public function handleHelp(Erebot_Interface_Event_TextMessage $event)
+    public function handleHelp(Erebot_Interface_Event_Base_TextMessage $event)
     {
-        if ($event instanceof Erebot_Interface_Event_Private) {
+        if ($event instanceof Erebot_Interface_Event_Base_Private) {
             $target = $event->getSource();
             $chan   = NULL;
         }
