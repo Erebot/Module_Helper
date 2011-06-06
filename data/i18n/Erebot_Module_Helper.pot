@@ -4,9 +4,9 @@
 #
 #, fuzzy
 msgid   ""
-msgstr  "Project-Id-Version: Erebot_Module_Helper 0.3.2\n"
-        "Report-Msgid-Bugs-To: clicky@erebot.net\n"
-        "POT-Creation-Date: 2011-06-03 22:25+0200\n"
+msgstr  "Project-Id-Version: Erebot_Module_Helper 0.1.1\n"
+        "Report-Msgid-Bugs-To: i18n@erebot.net\n"
+        "POT-Creation-Date: 2011-06-07 01:06+0200\n"
         "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
         "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
         "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -14,7 +14,7 @@ msgstr  "Project-Id-Version: Erebot_Module_Helper 0.3.2\n"
         "Content-Type: text/plain; charset=CHARSET\n"
         "Content-Transfer-Encoding: 8bit\n"
 #
-# File: /home/looksup/Documents/Erebot/modules/Helper/trunk/src/Erebot/Module/Helper.php, line: 134
+# File: src/Erebot/Module/Helper.php, line: 134
 msgid   "\n"
         "<b>Usage</b>: \"!<var name=\"trigger\"/> &lt;<u>Module</u>&gt; "
         "[<u>command</u>]\"\n"
@@ -25,7 +25,7 @@ msgid   "\n"
         "modules.\n"
 msgstr  ""
 #
-# File: /home/looksup/Documents/Erebot/modules/Helper/trunk/src/Erebot/Module/Helper.php, line: 116
+# File: src/Erebot/Module/Helper.php, line: 116
 msgid   "\n"
         "<b>Usage</b>: \"!<var name=\"trigger\"/> &lt;<u>Module</u>&gt; "
         "[<u>command</u>]\".\n"
@@ -37,14 +37,14 @@ msgid   "\n"
         "<b><var name=\"module\"/></b></for>.\n"
 msgstr  ""
 #
-# File: /home/looksup/Documents/Erebot/modules/Helper/trunk/src/Erebot/Module/Helper.php, line: 52
+# File: src/Erebot/Module/Helper.php, line: 52
 msgid   "Could not register Help trigger"
 msgstr  ""
 #
-# File: /home/looksup/Documents/Erebot/modules/Helper/trunk/src/Erebot/Module/Helper.php, line: 207
+# File: src/Erebot/Module/Helper.php, line: 207
 msgid   "No help available on the given module or command."
 msgstr  ""
 #
-# File: /home/looksup/Documents/Erebot/modules/Helper/trunk/src/Erebot/Module/Helper.php, line: 179
+# File: src/Erebot/Module/Helper.php, line: 179
 msgid   "No such module <b><var name=\"module\"/></b> or no help available."
 msgstr  ""
