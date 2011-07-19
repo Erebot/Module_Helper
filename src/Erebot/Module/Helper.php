@@ -49,9 +49,11 @@ extends Erebot_Module_Base
                     'Could not register Help trigger'));
 
             $this->_handler = new Erebot_EventHandler(
-                array($this, 'handleHelp'),
+                new Erebot_Callable(array($this, 'handleHelp')),
                 new Erebot_Event_Match_All(
-                    new Erebot_Event_Match_InstanceOf('Erebot_Interface_Event_Base_TextMessage'),
+                    new Erebot_Event_Match_InstanceOf(
+                        'Erebot_Interface_Event_Base_TextMessage'
+                    ),
                     new Erebot_Event_Match_Any(
                         new Erebot_Event_Match_TextStatic($trigger, TRUE),
                         new Erebot_Event_Match_TextWildcard($trigger.' *', TRUE)
