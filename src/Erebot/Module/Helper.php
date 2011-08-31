@@ -46,8 +46,11 @@ extends Erebot_Module_Base
             $this->_trigger = $registry->registerTriggers($trigger, $matchAny);
             if ($this->_trigger === NULL) {
                 $translator = $this->getTranslator(FALSE);
-                throw new Exception($translator->gettext(
-                    'Could not register Help trigger'));
+                throw new Exception(
+                    $translator->gettext(
+                        'Could not register Help trigger'
+                    )
+                );
             }
 
             $this->_handler = new Erebot_EventHandler(
@@ -85,7 +88,8 @@ extends Erebot_Module_Base
         $reflector  = new ReflectionParameter($callback, 0);
         $cls        = $reflector->getClass();
         if ($cls === NULL || !$cls->implementsInterface(
-            'Erebot_Interface_Event_Base_MessageCapable'))
+            'Erebot_Interface_Event_Base_MessageCapable'
+        ))
             throw new Erebot_InvalidValueException('Invalid signature');
 
         $this->_helpCallbacks[$moduleName] = $callback;
@@ -114,13 +118,13 @@ extends Erebot_Module_Base
         // "!help Helper"
         if ($nbArgs == 1 && $words[0] == $moduleName) {
             $modules = array_keys($this->_connection->getModules($chan));
-            $msg = $translator->gettext('
-<b>Usage</b>: "!<var name="trigger"/> &lt;<u>Module</u>&gt; [<u>command</u>]".
-Module names must start with an uppercase letter but are not case-sensitive
-otherwise.
-The following modules are loaded: <for from="modules" item="module">
-<b><var name="module"/></b></for>.
-');
+            $msg = $translator->gettext(
+                '<b>Usage</b>: "!<var name="trigger"/> &lt;<u>Module</u>&gt; '.
+                '[<u>command</u>]". Module names must start with an '.
+                'uppercase letter but are not case-sensitive otherwise. '.
+                'The following modules are loaded: <for from="modules" '.
+                'item="module"><b><var name="module"/></b></for>.'
+            );
             $tpl = new Erebot_Styling($msg, $translator);
             $tpl->assign('modules', $modules);
             $tpl->assign('trigger', $trigger);
@@ -132,16 +136,16 @@ The following modules are loaded: <for from="modules" item="module">
             return FALSE;
 
         // "!help Helper *" or just "!help"
-        $msg = $translator->gettext('
-<b>Usage</b>: "!<var name="trigger"/> &lt;<u>Module</u>&gt; [<u>command</u>]"
-or "!<var name="trigger"/> &lt;<u>command</u>&gt;".
-Provides help about a particular module or command.
-Use "!<var name="trigger"/> <var name="this"/>" for a list of currently loaded
-modules.
-');
+        $msg = $translator->gettext(
+            '<b>Usage</b>: "!<var name="trigger"/> &lt;<u>Module</u>&gt; '.
+            '[<u>command</u>]" or "!<var name="trigger"/> '.
+            '&lt;<u>command</u>&gt;". Provides help about a particular '.
+            'module or command. Use "!<var name="trigger"/> <var '.
+            'name="this"/>" for a list of currently loaded modules.'
+        );
         $bot = $this->_connection->getBot();
         $tpl = new Erebot_Styling($msg, $translator);
-        $tpl->assign('this',    get_class());
+        $tpl->assign('this', get_class());
         $tpl->assign('trigger', $trigger);
         $this->sendMessage($target, $tpl->render());
         return TRUE;
@@ -181,7 +185,8 @@ modules.
             !isset($this->_helpCallbacks[$moduleName])) {
             $msg = $translator->gettext(
                 'No such module <b><var name="module"/></b> '.
-                'or no help available.');
+                'or no help available.'
+            );
             $tpl = new Erebot_Styling($msg, $translator);
             $tpl->assign('module', $moduleName);
             return $this->sendMessage($target, $tpl->render());
@@ -191,8 +196,10 @@ modules.
         // If the request directly concerns a command (!help command),
         // loop through all callbacks until one handles the request.
         if ($moduleName === NULL)
-            $moduleNames = array_map('strtolower', array_keys(
-                            $this->_connection->getModules($chan)));
+            $moduleNames = array_map(
+                'strtolower',
+                array_keys($this->_connection->getModules($chan))
+            );
         else
             $moduleNames = array($moduleName);
 
@@ -208,8 +215,9 @@ modules.
 
         // No callback handled this request.
         // We assume no help is available.
-        $msg = $translator->gettext('No help available on the given '.
-                                    'module or command.');
+        $msg = $translator->gettext(
+            'No help available on the given module or command.'
+        );
         $tpl = new Erebot_Styling($msg, $translator);
         $this->sendMessage($target, $tpl->render());
     }
