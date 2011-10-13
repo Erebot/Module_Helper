@@ -6,7 +6,7 @@
 msgid   ""
 msgstr  "Project-Id-Version: Erebot_Module_Helper 0.1.1\n"
         "Report-Msgid-Bugs-To: i18n@erebot.net\n"
-        "POT-Creation-Date: 2011-10-13 18:30+0200\n"
+        "POT-Creation-Date: 2011-10-13 20:31+0200\n"
         "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
         "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
         "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -35,12 +35,12 @@ msgstr  ""
 msgid   "Could not register Help trigger"
 msgstr  ""
 #
-# File: src/Erebot/Module/Helper.php, line: 204
-msgid   "No help available on <b><var name=\"module\"/></b>."
+# File: src/Erebot/Module/Helper.php, line: 236
+msgid   "No help available on command <b><var name=\"command\"/></b>."
 msgstr  ""
 #
-# File: src/Erebot/Module/Helper.php, line: 236
-msgid   "No help available on the given module or command."
+# File: src/Erebot/Module/Helper.php, line: 204
+msgid   "No help available on module <b><var name=\"module\"/></b>."
 msgstr  ""
 #
 # File: src/Erebot/Module/Helper.php, line: 195

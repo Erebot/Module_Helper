@@ -201,7 +201,7 @@ extends Erebot_Module_Base
 
             if (!isset($this->_helpCallbacks[$moduleName])) {
                 $msg = $translator->gettext(
-                    'No help available on <b><var name="module"/></b>.'
+                    'No help available on module <b><var name="module"/></b>.'
                 );
                 $tpl = new Erebot_Styling($msg, $translator);
                 $tpl->assign('module', $moduleName);
@@ -233,9 +233,10 @@ extends Erebot_Module_Base
         // No callback handled this request.
         // We assume no help is available.
         $msg = $translator->gettext(
-            'No help available on the given module or command.'
+            'No help available on command <b><var name="command"/></b>.'
         );
         $tpl = new Erebot_Styling($msg, $translator);
+        $tpl->assign('command', $text);
         $this->sendMessage($target, $tpl->render());
     }
 }
