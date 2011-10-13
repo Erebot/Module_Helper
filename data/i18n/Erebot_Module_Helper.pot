@@ -6,45 +6,43 @@
 msgid   ""
 msgstr  "Project-Id-Version: Erebot_Module_Helper 0.1.1\n"
         "Report-Msgid-Bugs-To: i18n@erebot.net\n"
-        "POT-Creation-Date: 2011-06-07 01:06+0200\n"
+        "POT-Creation-Date: 2011-10-13 18:30+0200\n"
         "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
         "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
         "Language-Team: LANGUAGE <LL@li.org>\n"
+        "Language: \n"
         "MIME-Version: 1.0\n"
         "Content-Type: text/plain; charset=CHARSET\n"
         "Content-Transfer-Encoding: 8bit\n"
 #
-# File: src/Erebot/Module/Helper.php, line: 134
-msgid   "\n"
-        "<b>Usage</b>: \"!<var name=\"trigger\"/> &lt;<u>Module</u>&gt; "
-        "[<u>command</u>]\"\n"
-        "or \"!<var name=\"trigger\"/> &lt;<u>command</u>&gt;\".\n"
-        "Provides help about a particular module or command.\n"
-        "Use \"!<var name=\"trigger\"/> <var name=\"this\"/>\" for a list of "
-        "currently loaded\n"
-        "modules.\n"
+# File: src/Erebot/Module/Helper.php, line: 140
+msgid   "<b>Usage</b>: \"!<var name=\"trigger\"/> &lt;<u>Module</u>&gt; "
+        "[<u>command</u>]\" or \"!<var name=\"trigger\"/> &lt;<u>command</"
+        "u>&gt;\". Provides help about a particular module or command. Use \"!"
+        "<var name=\"trigger\"/> <var name=\"this\"/>\" for a list of "
+        "currently loaded modules."
 msgstr  ""
 #
-# File: src/Erebot/Module/Helper.php, line: 116
-msgid   "\n"
-        "<b>Usage</b>: \"!<var name=\"trigger\"/> &lt;<u>Module</u>&gt; "
-        "[<u>command</u>]\".\n"
-        "Module names must start with an uppercase letter but are not case-"
-        "sensitive\n"
-        "otherwise.\n"
-        "The following modules are loaded: <for from=\"modules\" item=\"module"
-        "\">\n"
-        "<b><var name=\"module\"/></b></for>.\n"
+# File: src/Erebot/Module/Helper.php, line: 122
+msgid   "<b>Usage</b>: \"!<var name=\"trigger\"/> &lt;<u>Module</u>&gt; "
+        "[<u>command</u>]\". Module names must start with an uppercase letter "
+        "but are not case-sensitive otherwise. The following modules are "
+        "loaded: <for from=\"modules\" item=\"module\"><b><var name=\"module\"/"
+        "></b></for>."
 msgstr  ""
 #
-# File: src/Erebot/Module/Helper.php, line: 52
+# File: src/Erebot/Module/Helper.php, line: 51
 msgid   "Could not register Help trigger"
 msgstr  ""
 #
-# File: src/Erebot/Module/Helper.php, line: 207
+# File: src/Erebot/Module/Helper.php, line: 204
+msgid   "No help available on <b><var name=\"module\"/></b>."
+msgstr  ""
+#
+# File: src/Erebot/Module/Helper.php, line: 236
 msgid   "No help available on the given module or command."
 msgstr  ""
 #
-# File: src/Erebot/Module/Helper.php, line: 179
-msgid   "No such module <b><var name=\"module\"/></b> or no help available."
+# File: src/Erebot/Module/Helper.php, line: 195
+msgid   "No such module <b><var name=\"module\"/></b>."
 msgstr  ""

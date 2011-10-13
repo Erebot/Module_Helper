@@ -181,15 +181,32 @@ extends Erebot_Module_Base
             $moduleName = strtolower(array_shift($text));
 
         // Got request on a module, check if it exists/has a callback.
-        if ($moduleName !== NULL &&
-            !isset($this->_helpCallbacks[$moduleName])) {
-            $msg = $translator->gettext(
-                'No such module <b><var name="module"/></b> '.
-                'or no help available.'
-            );
-            $tpl = new Erebot_Styling($msg, $translator);
-            $tpl->assign('module', $moduleName);
-            return $this->sendMessage($target, $tpl->render());
+        if ($moduleName !== NULL) {
+            $found = FALSE;
+            foreach ($this->_connection->getModules($chan) as $name => $obj) {
+                if (!strcasecmp($name, $moduleName)) {
+                    $found = TRUE;
+                    break;
+                }
+            }
+
+            if (!$found) {
+                $msg = $translator->gettext(
+                    'No such module <b><var name="module"/></b>.'
+                );
+                $tpl = new Erebot_Styling($msg, $translator);
+                $tpl->assign('module', $moduleName);
+                return $this->sendMessage($target, $tpl->render());
+            }
+
+            if (!isset($this->_helpCallbacks[$moduleName])) {
+                $msg = $translator->gettext(
+                    'No help available on <b><var name="module"/></b>.'
+                );
+                $tpl = new Erebot_Styling($msg, $translator);
+                $tpl->assign('module', $moduleName);
+                return $this->sendMessage($target, $tpl->render());
+            }
         }
 
         // Now, use the appropriate callback to handle the request.
