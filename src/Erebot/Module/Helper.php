@@ -236,7 +236,7 @@ extends Erebot_Module_Base
             'No help available on command <b><var name="command"/></b>.'
         );
         $tpl = new Erebot_Styling($msg, $translator);
-        $tpl->assign('command', $text);
+        $tpl->assign('command', $event->getText()->getTokens(1));
         $this->sendMessage($target, $tpl->render());
     }
 }
