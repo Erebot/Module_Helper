@@ -45,12 +45,8 @@ extends Erebot_Module_Base
             $trigger        = $this->parseString('trigger', 'help');
             $this->_trigger = $registry->registerTriggers($trigger, $matchAny);
             if ($this->_trigger === NULL) {
-                $translator = $this->getTranslator(FALSE);
-                throw new Exception(
-                    $translator->gettext(
-                        'Could not register Help trigger'
-                    )
-                );
+                $fmt = $this->getFormatter(FALSE);
+                throw new Exception($fmt->_('Could not register Help trigger'));
             }
 
             $this->_handler = new Erebot_EventHandler(
@@ -108,7 +104,7 @@ extends Erebot_Module_Base
         else
             $target = $chan = $event->getChan();
 
-        $translator = $this->getTranslator($chan);
+        $fmt        = $this->getFormatter($chan);
         $trigger    = $this->parseString('trigger', 'help');
 
         $bot        = $this->_connection->getBot();
@@ -118,17 +114,18 @@ extends Erebot_Module_Base
         // "!help Helper"
         if ($nbArgs == 1 && $words[0] == $moduleName) {
             $modules = array_keys($this->_connection->getModules($chan));
-            $msg = $translator->gettext(
+            $msg = $fmt->_(
                 '<b>Usage</b>: "!<var name="trigger"/> &lt;<u>Module</u>&gt; '.
                 '[<u>command</u>]". Module names must start with an '.
                 'uppercase letter but are not case-sensitive otherwise. '.
                 'The following modules are loaded: <for from="modules" '.
-                'item="module"><b><var name="module"/></b></for>.'
+                'item="module"><b><var name="module"/></b></for>.',
+                array(
+                    'modules' => $modules,
+                    'trigger' => $trigger,
+                )
             );
-            $tpl = new Erebot_Styling($msg, $translator);
-            $tpl->assign('modules', $modules);
-            $tpl->assign('trigger', $trigger);
-            $this->sendMessage($target, $tpl->render());
+            $this->sendMessage($target, $msg);
             return TRUE;
         }
 
@@ -136,18 +133,18 @@ extends Erebot_Module_Base
             return FALSE;
 
         // "!help Helper *" or just "!help"
-        $msg = $translator->gettext(
+        $msg = $fmt->_(
             '<b>Usage</b>: "!<var name="trigger"/> &lt;<u>Module</u>&gt; '.
             '[<u>command</u>]" or "!<var name="trigger"/> '.
             '&lt;<u>command</u>&gt;". Provides help about a particular '.
             'module or command. Use "!<var name="trigger"/> <var '.
-            'name="this"/>" for a list of currently loaded modules.'
+            'name="this"/>" for a list of currently loaded modules.',
+            array(
+                'this' => get_class(),
+                'trigger' => $trigger,
+            )
         );
-        $bot = $this->_connection->getBot();
-        $tpl = new Erebot_Styling($msg, $translator);
-        $tpl->assign('this', get_class());
-        $tpl->assign('trigger', $trigger);
-        $this->sendMessage($target, $tpl->render());
+        $this->sendMessage($target, $msg);
         return TRUE;
     }
 
@@ -165,7 +162,7 @@ extends Erebot_Module_Base
 
         $text       = preg_split('/\s+/', rtrim($event->getText()));
         $foo        = array_shift($text); // Consume '!help' trigger.
-        $translator = $this->getTranslator($chan);
+        $fmt        = $this->getFormatter($chan);
 
         // Just "!help". Emulate "!help Help help".
         if (!count($text)) {
@@ -191,21 +188,19 @@ extends Erebot_Module_Base
             }
 
             if (!$found) {
-                $msg = $translator->gettext(
-                    'No such module <b><var name="module"/></b>.'
+                $msg = $fmt->_(
+                    'No such module <b><var name="module"/></b>.',
+                    array('module' => $moduleName)
                 );
-                $tpl = new Erebot_Styling($msg, $translator);
-                $tpl->assign('module', $moduleName);
-                return $this->sendMessage($target, $tpl->render());
+                return $this->sendMessage($target, $msg);
             }
 
             if (!isset($this->_helpCallbacks[$moduleName])) {
-                $msg = $translator->gettext(
-                    'No help available on module <b><var name="module"/></b>.'
+                $msg = $fmt->_(
+                    'No help available on module <b><var name="module"/></b>.',
+                    array('module' => $moduleName)
                 );
-                $tpl = new Erebot_Styling($msg, $translator);
-                $tpl->assign('module', $moduleName);
-                return $this->sendMessage($target, $tpl->render());
+                return $this->sendMessage($target, $msg);
             }
         }
 
@@ -232,12 +227,11 @@ extends Erebot_Module_Base
 
         // No callback handled this request.
         // We assume no help is available.
-        $msg = $translator->gettext(
-            'No help available on command <b><var name="command"/></b>.'
+        $msg = $fmt->_(
+            'No help available on command <b><var name="command"/></b>.',
+            array('command' => $event->getText()->getTokens(1))
         );
-        $tpl = new Erebot_Styling($msg, $translator);
-        $tpl->assign('command', $event->getText()->getTokens(1));
-        $this->sendMessage($target, $tpl->render());
+        $this->sendMessage($target, $msg);
     }
 }
 
