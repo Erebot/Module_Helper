@@ -1,0 +1,171 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Usage &mdash; Erebot_Module_Helper v0.1.1snapshot155 documentation</title>
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1.1snapshot155',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="search" type="application/opensearchdescription+xml"
+          title="Search within Erebot_Module_Helper v0.1.1snapshot155 documentation"
+          href="_static/opensearch.xml"/>
+    <link rel="top" title="Erebot_Module_Helper v0.1.1snapshot155 documentation" href="index.html" />
+    <link rel="prev" title="Configuration" href="Configuration.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="Configuration.html" title="Configuration"
+             accesskey="P">previous</a></li>
+        <li><a href="index.html">Erebot_Module_Helper v0.1.1snapshot155 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <blockquote>
+<div></div></blockquote>
+<div class="section" id="usage">
+<h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
+<p>This section assumes default values are used for all triggers.
+Please refer to <a class="reference internal" href="Configuration.html#configuration-options"><em>configuration options</em></a>
+for more information on how to customize triggers.</p>
+<div class="section" id="provided-commands">
+<span id="commands-provided"></span><h2>Provided commands<a class="headerlink" href="#provided-commands" title="Permalink to this headline">¶</a></h2>
+<p>This module provides the following commands:</p>
+<table border="1" class="docutils">
+<caption>Commands provided by Erebot_Module_Helper</caption>
+<colgroup>
+<col width="44%" />
+<col width="56%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Command</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td><tt class="docutils literal"><span class="pre">!help</span></tt></td>
+<td>Gives a brief summary of usage.</td>
+</tr>
+<tr><td><tt class="samp docutils literal"><span class="pre">!help</span> <em><span class="pre">Module</span></em></tt></td>
+<td>Retrieves help on module <em>Module</em>.
+The name of the module <strong>MUST</strong> start
+with an uppercase letter.</td>
+</tr>
+<tr><td><tt class="samp docutils literal"><span class="pre">!help</span> <em><span class="pre">command</span></em></tt></td>
+<td>Retrieves help on command <em>command</em>.
+The command&#8217;s name <strong>MAY NOT</strong> start
+with an uppercase letter.</td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">!help</span> <span class="pre">Erebot_Module_Helper</span></tt></td>
+<td>Displays all available modules.</td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">!help</span> <span class="pre">help</span></tt></td>
+<td>Same as if <tt class="docutils literal"><span class="pre">!help</span></tt> had been used.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>The listing below shows different sessions where commands have been used
+to get help on other modules and commands, in the same order as in the
+<a class="reference internal" href="#commands-provided"><em>array above</em></a>.</p>
+<div class="highlight-irc"><div class="highlight"><pre><span class="cp">23:51:23 </span><span class="nt">&lt;@Clicky&gt; </span>!help
+<span class="cp">23:51:24 </span><span class="nt">&lt; Erebot&gt; </span>Usage : &quot;!help &lt;Module&gt; [commande]&quot; ou &quot;!help &lt;commande&gt;&quot;. Fournit de l&#39;aide sur un module ou une commande donné. Utilisez &quot;!help
+                   Erebot_Module_Helper&quot; pour voir la liste des modules actuellement chargés.
+
+<span class="cp">23:53:35 </span><span class="nt">&lt;@Clicky&gt; </span>!help Erebot_Module_Roulette
+<span class="cp">23:53:35 </span><span class="nt">&lt; Erebot&gt; </span>Fournit la commande !roulette qui vous fait jouer à la Roulette Russe.
+
+<span class="cp">23:53:43 </span><span class="nt">&lt;@Clicky&gt; </span>!help roulette
+<span class="cp">23:53:43 </span><span class="nt">&lt; Erebot&gt; </span>Usage : !roulette. Appuie sur la gachette du pistolet de la Roulette Russe.
+
+<span class="cp">23:53:07 </span><span class="nt">&lt;@Clicky&gt; </span>!help Erebot_Module_Helper
+<span class="cp">23:53:07 </span><span class="nt">&lt; Erebot&gt; </span>Usage : &quot;!help &lt;Module&gt; [commande]&quot;. Les noms de modules doivent commencer par une majuscule, mais ne sont pas sensibles à la casse.
+                   Les modules suivants sont chargés : Erebot_Module_AutoJoin, Erebot_Module_AZ, Erebot_Module_TriggerRegistry, Erebot_Module_Admin,
+                   Erebot_Module_AutoConnect, Erebot_Module_Countdown, Erebot_Module_Helper, Erebot_Module_CtcpResponder,
+<span class="cp">23:53:08 </span><span class="nt">&lt; Erebot&gt; </span>Erebot_Module_GoF, Erebot_Module_IrcConnector, Erebot_Module_IrcTracker, Erebot_Module_LagChecker, Erebot_Module_Math,
+                   Erebot_Module_PhpFilter, Erebot_Module_PingReply, Erebot_Module_RateLimiter, Erebot_Module_Roulette,
+                   Erebot_Module_ServerCapabilities, Erebot_Module_TV, Erebot_Module_Uno, Erebot_Module_WatchList, Erebot_Module_WebGetter &amp;
+<span class="cp">23:53:09 </span><span class="nt">&lt; Erebot&gt; </span>Erebot_Module_Wordlists.
+
+<span class="cp">23:54:09 </span><span class="nt">&lt;@Clicky&gt; </span>!help help
+<span class="cp">23:54:09 </span><span class="nt">&lt; Erebot&gt; </span>Usage : &quot;!help &lt;Module&gt; [commande]&quot; ou &quot;!help &lt;commande&gt;&quot;. Fournit de l&#39;aide sur un module ou une commande donné. Utilisez &quot;!help
+                   Erebot_Module_Helper&quot; pour voir la liste des modules actuellement chargés.
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Usage</a><ul>
+<li><a class="reference internal" href="#provided-commands">Provided commands</a></li>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="Configuration.html"
+                        title="previous chapter">Configuration</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="Configuration.html" title="Configuration"
+             >previous</a></li>
+        <li><a href="index.html">Erebot_Module_Helper v0.1.1snapshot155 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Erebot.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.8.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,168 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Configuration &mdash; Erebot_Module_Helper v0.1.1snapshot155 documentation</title>
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1.1snapshot155',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="search" type="application/opensearchdescription+xml"
+          title="Search within Erebot_Module_Helper v0.1.1snapshot155 documentation"
+          href="_static/opensearch.xml"/>
+    <link rel="top" title="Erebot_Module_Helper v0.1.1snapshot155 documentation" href="index.html" />
+    <link rel="next" title="Usage" href="Usage.html" />
+    <link rel="prev" title="Installation" href="generic/Installation.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="Usage.html" title="Usage"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="generic/Installation.html" title="Installation"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Erebot_Module_Helper v0.1.1snapshot155 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <blockquote>
+<div></div></blockquote>
+<div class="section" id="configuration">
+<h1>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="options">
+<span id="configuration-options"></span><h2>Options<a class="headerlink" href="#options" title="Permalink to this headline">¶</a></h2>
+<p>This module provides only one configuration option.</p>
+<table border="1" class="docutils">
+<caption>Options for Erebot_Module_Helper</caption>
+<colgroup>
+<col width="22%" />
+<col width="12%" />
+<col width="22%" />
+<col width="44%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Name</th>
+<th class="head">Type</th>
+<th class="head">Default value</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>trigger</td>
+<td>string</td>
+<td>&#8220;help&#8221;</td>
+<td>The command to use to get
+help on other modules and
+commands.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<p>The recommended way to use this module is to have it loaded at the general
+configuration level and to disable it only for specific networks, if needed.</p>
+<p>The listing below shows how to change this module&#8217;s trigger so that help
+becomes available using the command <tt class="docutils literal"><span class="pre">!helpme</span></tt> (instead of <tt class="docutils literal"><span class="pre">!help</span></tt>).</p>
+<div class="highlight-xml"><div class="highlight"><pre><span class="cp">&lt;?xml version=&quot;1.0&quot;?&gt;</span>
+<span class="nt">&lt;configuration</span>
+  <span class="na">xmlns=</span><span class="s">&quot;http://localhost/Erebot/&quot;</span>
+  <span class="na">version=</span><span class="s">&quot;...&quot;</span>
+  <span class="na">language=</span><span class="s">&quot;fr-FR&quot;</span>
+  <span class="na">timezone=</span><span class="s">&quot;Europe/Paris&quot;</span>
+  <span class="na">commands-prefix=</span><span class="s">&quot;!&quot;</span><span class="nt">&gt;</span>
+
+  <span class="nt">&lt;modules&gt;</span>
+    <span class="c">&lt;!-- Other modules ignored for clarity. --&gt;</span>
+
+    <span class="c">&lt;!-- We only change the default command name. --&gt;</span>
+    <span class="nt">&lt;module</span> <span class="na">name=</span><span class="s">&quot;Erebot_Module_Helper&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;param</span> <span class="na">name=</span><span class="s">&quot;trigger&quot;</span> <span class="na">value=</span><span class="s">&quot;helpme&quot;</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;/module&gt;</span>
+  <span class="nt">&lt;/modules&gt;</span>
+
+  <span class="c">&lt;!-- Rest of the configuration (networks, etc.) --&gt;</span>
+<span class="nt">&lt;/configuration&gt;</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Configuration</a><ul>
+<li><a class="reference internal" href="#options">Options</a></li>
+<li><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="generic/Installation.html"
+                        title="previous chapter">Installation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="Usage.html"
+                        title="next chapter">Usage</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="Usage.html" title="Usage"
+             >next</a></li>
+        <li class="right" >
+          <a href="generic/Installation.html" title="Installation"
+             >previous</a> |</li>
+        <li><a href="index.html">Erebot_Module_Helper v0.1.1snapshot155 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Erebot.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.8.
+    </div>
+  </body>
+</html>
