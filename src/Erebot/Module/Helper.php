@@ -16,14 +16,26 @@
     along with Erebot.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+/**
+ * \brief
+ *      A module that can be used by other modules
+ *      to register a method to call whenever someone
+ *      asks for help on them.
+ */
 class   Erebot_Module_Helper
 extends Erebot_Module_Base
 {
+    /// Token associated with this module's trigger.
     protected $_trigger;
+
+    /// Handler used by this module to detect help requests.
     protected $_handler;
-    protected $_helpTopics;
+
+    /// Maps each module to the method that handles help requests for it.
     protected $_helpCallbacks;
 
+
+    /// \copydoc Erebot_Module_Base::_reload()
     public function _reload($flags)
     {
         if (!($flags & self::RELOAD_INIT)) {
@@ -70,18 +82,30 @@ extends Erebot_Module_Base
         }
     }
 
-    protected function _unload()
-    {
-    }
-
+    /**
+     * Registers a method to call back whenever
+     * someone requests help on a specific module.
+     *
+     * \param Erebot_Module_Base $module
+     *      The module the method provides help for.
+     *
+     * \param Erebot_Interface_Callable $callback
+     *      The method/function to call whenever
+     *      someone asks for help on that particular
+     *      module or a command provided by it.
+     *
+     * \return
+     *      This method always returns TRUE.
+     */
     public function realRegisterHelpMethod(
-        Erebot_Module_Base  $module,
-                            $callback
+        Erebot_Module_Base          $module,
+        Erebot_Interface_Callable   $callback
     )
     {
-        $bot = $this->_connection->getBot();
-        $moduleName = strtolower(get_class($module));
+        // Works for all kinds of PHP callbacks so far...
+        // (functions, [static] methods, invokable objects & closures)
         $reflector  = new ReflectionParameter($callback, 0);
+        $moduleName = strtolower(get_class($module));
         $cls        = $reflector->getClass();
         if ($cls === NULL || !$cls->implementsInterface(
             'Erebot_Interface_Event_Base_MessageCapable'
@@ -92,6 +116,18 @@ extends Erebot_Module_Base
         return TRUE;
     }
 
+    /**
+     * Provides help about this module.
+     *
+     * \param Erebot_Interface_Event_Base_TextMessage $event
+     *      Some help request.
+     *
+     * \param array $words
+     *      Parameters passed with the request. This is the same
+     *      as this module's name when help is requested on the
+     *      module itself (in opposition with help on a specific
+     *      command provided by the module).
+     */
     public function getHelp(
         Erebot_Interface_Event_Base_TextMessage $event,
                                                 $words
@@ -106,8 +142,6 @@ extends Erebot_Module_Base
 
         $fmt        = $this->getFormatter($chan);
         $trigger    = $this->parseString('trigger', 'help');
-
-        $bot        = $this->_connection->getBot();
         $moduleName = strtolower(get_class());
         $nbArgs     = count($words);
 
@@ -148,6 +182,16 @@ extends Erebot_Module_Base
         return TRUE;
     }
 
+    /**
+     * Handles a request for help on some module/command.
+     *
+     * \param Erebot_Interface_EventHandler $handler
+     *      Handler that triggered this event.
+     *
+     * \param Erebot_Interface_Event_Base_TextMessage $event
+     *      Contents of the help request (eg. name of a module
+     *      or command).
+     */
     public function handleHelp(
         Erebot_Interface_EventHandler           $handler,
         Erebot_Interface_Event_Base_TextMessage $event
@@ -165,10 +209,8 @@ extends Erebot_Module_Base
         $fmt        = $this->getFormatter($chan);
 
         // Just "!help". Emulate "!help Help help".
-        if (!count($text)) {
-            $bot    = $this->_connection->getBot();
-            $text   = array(get_class(), 'help');
-        }
+        if (!count($text))
+            $text = array(get_class(), 'help');
 
         $moduleName = NULL;
         // If the first letter of the first word is in uppercase,
@@ -221,7 +263,7 @@ extends Erebot_Module_Base
             $callback = $this->_helpCallbacks[$modName];
             $words = $text;
             array_unshift($words, $moduleName);
-            if (call_user_func($callback, $event, $words))
+            if ($callback->invoke($event, $words))
                 return;
         }
 
