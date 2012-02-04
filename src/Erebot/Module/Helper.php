@@ -86,10 +86,14 @@ extends Erebot_Module_Base
             );
             $this->_connection->addEventHandler($this->_handler);
 
-            // Add help support to Help module.
+            // Add help support for the Helper module itself.
             // This has to be done by hand, because the module
             // is not registered for this connection yet.
-            $this->realRegisterHelpMethod($this, array($this, 'getHelp'));
+            $cls = $this->getFactory('!Callable');
+            $this->realRegisterHelpMethod(
+                $this,
+                new $cls(array($this, 'getHelp'))
+            );
         }
     }
 
