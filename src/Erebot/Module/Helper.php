@@ -198,6 +198,84 @@ extends Erebot_Module_Base
     }
 
     /**
+     * Checks whether the given module exists and whether
+     * an help callback has been registered for that module.
+     *
+     * \param Erebot_Interface_Styling $fmt
+     *      Formatter for messages produced by this method.
+     *
+     * \param string $target
+     *      Some user's nickname or IRC channel name messages
+     *      emitted by this method will be sent to.
+     *
+     * \param mixed $chan
+     *      Either the name of an IRC channel or NULL.
+     *      This is used to retrieve a list of all modules
+     *      enabled for that channel.
+     *
+     * \param string $moduleName
+     *      Name of the module the help request is about.
+     *
+     * \retval bool
+     *      TRUE if the given module exists and some callback
+     *      was registered to handle help requests for it, or
+     *      FALSE otherwise.
+     */
+    protected function _checkCallback($fmt, $target, $chan, $moduleName)
+    {
+        $found = FALSE;
+        $chanModules = array_keys($this->_connection->getModules($chan));
+        foreach ($chanModules as $name) {
+            if (!strcasecmp($name, $moduleName)) {
+                $found = TRUE;
+                break;
+            }
+        }
+
+        if (!$found) {
+            $msg = $fmt->_(
+                'No such module <b><var name="module"/></b>.',
+                array('module' => $moduleName)
+            );
+            $this->sendMessage($target, $msg);
+            return FALSE;
+        }
+
+        if (!isset($this->_helpCallbacks[$moduleName])) {
+            $msg = $fmt->_(
+                'No help available on module <b><var name="module"/></b>.',
+                array('module' => $moduleName)
+            );
+            $this->sendMessage($target, $msg);
+            return FALSE;
+        }
+        return TRUE;
+    }
+
+    /**
+     * Extracts the name of a module from some
+     * help request.
+     *
+     * \param Erebot_Interface_TextWrapper $text
+     *      Text of the help request from which
+     *      the module name will be extracted.
+     *
+     * \retval mixed
+     *      Either the name of the module the
+     *      help request relates to or NULL
+     *      if the request is about a command.
+     */
+    static protected function _getModuleName($text)
+    {
+        // If the first letter of the first word is in uppercase,
+        // this is a request for help on a module (!help Module).
+        $first = substr($text[0][0], 0, 1);
+        if ($first == strtoupper($first))
+            return strtolower(array_shift($text));
+        return NULL;
+    }
+
+    /**
      * Handles a request for help on some module/command.
      *
      * \param Erebot_Interface_EventHandler $handler
@@ -222,65 +300,34 @@ extends Erebot_Module_Base
         else
             $target = $chan = $event->getChan();
 
-        $text       = preg_split('/\s+/', rtrim($event->getText()));
-        $foo        = array_shift($text); // Consume '!help' trigger.
-        $fmt        = $this->getFormatter($chan);
+        $text   = preg_split('/\s+/', rtrim($event->getText()));
+        $fmt    = $this->getFormatter($chan);
+        array_shift($text); // Consume the '!help' trigger.
 
-        // Just "!help". Emulate "!help Help help".
+        // Just "!help". Emulate "!help Erebot_Module_Helper help".
         if (!count($text))
             $text = array(get_class(), 'help');
 
-        $moduleName = NULL;
-        // If the first letter of the first word is in uppercase,
-        // this is a request for help on a module (!help Module).
-        $first = substr($text[0][0], 0, 1);
-        if ($first == strtoupper($first))
-            $moduleName = strtolower(array_shift($text));
-
-        // Got request on a module, check if it exists/has a callback.
-        if ($moduleName !== NULL) {
-            $found = FALSE;
-            $chanModules = array_keys($this->_connection->getModules($chan));
-            foreach ($chanModules as $name) {
-                if (!strcasecmp($name, $moduleName)) {
-                    $found = TRUE;
-                    break;
-                }
-            }
-
-            if (!$found) {
-                $msg = $fmt->_(
-                    'No such module <b><var name="module"/></b>.',
-                    array('module' => $moduleName)
-                );
-                return $this->sendMessage($target, $msg);
-            }
-
-            if (!isset($this->_helpCallbacks[$moduleName])) {
-                $msg = $fmt->_(
-                    'No help available on module <b><var name="module"/></b>.',
-                    array('module' => $moduleName)
-                );
-                return $this->sendMessage($target, $msg);
-            }
-        }
-
-        // Now, use the appropriate callback to handle the request.
-        // If the request directly concerns a command (!help command),
-        // loop through all callbacks until one handles the request.
+        // Got a request on a module, check if it exists/has a callback.
+        $moduleName = self::_getModuleName($text);
         if ($moduleName === NULL)
             $moduleNames = array_map(
                 'strtolower',
                 array_keys($this->_connection->getModules($chan))
             );
+        else if (!$this->_checkCallback($fmt, $target, $chan, $moduleName))
+            return;
         else
             $moduleNames = array($moduleName);
 
+        // Now, use the appropriate callback to handle the request.
+        // If the request directly concerns a command (!help command),
+        // loop through all callbacks until one handles the request.
         foreach ($moduleNames as $modName) {
             if (!isset($this->_helpCallbacks[$modName]))
                 continue;
-            $callback = $this->_helpCallbacks[$modName];
-            $words = $text;
+            $callback   = $this->_helpCallbacks[$modName];
+            $words      = $text;
             array_unshift($words, $moduleName);
             if ($callback->invoke($event, $words))
                 return;
