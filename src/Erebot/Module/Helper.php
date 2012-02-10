@@ -109,8 +109,9 @@ extends Erebot_Module_Base
      *      someone asks for help on that particular
      *      module or a command provided by it.
      *
-     * \return
-     *      This method always returns TRUE.
+     * \retval bool
+     *      TRUE if the call succeeded,
+     *      FALSE otherwise.
      */
     public function realRegisterHelpMethod(
         Erebot_Module_Base          $module,
@@ -119,7 +120,17 @@ extends Erebot_Module_Base
     {
         // Works for all kinds of PHP callbacks so far...
         // (functions, [static] methods, invokable objects & closures)
-        $reflector  = new ReflectionParameter($callback, 0);
+        try {
+            $reflector  = new ReflectionParameter($callback->getCallable(), 0);
+        }
+        catch (Exception $e) {
+            $bot        = $this->_connection->getBot();
+            $logging    = Plop::getInstance();
+            $logger     = $logging->getLogger(__FILE__);
+            $logger->exception($bot->gettext('Exception:'), $e);
+            return FALSE;
+        }
+
         $moduleName = strtolower(get_class($module));
         $cls        = $reflector->getClass();
         if ($cls === NULL || !$cls->implementsInterface(
@@ -137,7 +148,7 @@ extends Erebot_Module_Base
      * \param Erebot_Interface_Event_Base_TextMessage $event
      *      Some help request.
      *
-     * \param array $words
+     * \param Erebot_Interface_TextWrapper $words
      *      Parameters passed with the request. This is the same
      *      as this module's name when help is requested on the
      *      module itself (in opposition with help on a specific
@@ -145,7 +156,7 @@ extends Erebot_Module_Base
      */
     public function getHelp(
         Erebot_Interface_Event_Base_TextMessage $event,
-                                                $words
+        Erebot_Interface_TextWrapper            $words
     )
     {
         if ($event instanceof Erebot_Interface_Event_Base_Private) {
@@ -160,7 +171,7 @@ extends Erebot_Module_Base
         $moduleName = strtolower(get_class());
         $nbArgs     = count($words);
 
-        // "!help Helper"
+        // "!help Erebot_Module_Helper"
         if ($nbArgs == 1 && $words[0] == $moduleName) {
             $modules = array_keys($this->_connection->getModules($chan));
             $msg = $fmt->_(
@@ -241,7 +252,7 @@ extends Erebot_Module_Base
             return FALSE;
         }
 
-        if (!isset($this->_helpCallbacks[$moduleName])) {
+        if (!isset($this->_helpCallbacks[strtolower($moduleName)])) {
             $msg = $fmt->_(
                 'No help available on module <b><var name="module"/></b>.',
                 array('module' => $moduleName)
@@ -264,14 +275,24 @@ extends Erebot_Module_Base
      *      Either the name of the module the
      *      help request relates to or NULL
      *      if the request is about a command.
+     *
+     * \post
+     *      If the request was related to a
+     *      module, the module's name is removed
+     *      from the request.
      */
-    static protected function _getModuleName($text)
+    static protected function _getModuleName(
+        Erebot_Interface_TextWrapper &$text
+    )
     {
         // If the first letter of the first word is in uppercase,
         // this is a request for help on a module (!help Module).
-        $first = substr($text[0][0], 0, 1);
-        if ($first == strtoupper($first))
-            return strtolower(array_shift($text));
+        $first = substr($text[0], 0, 1);
+        if ($first !== FALSE && $first == strtoupper($first)) {
+            $moduleName = $text[0];
+            $text       = $text->getTokens(1); // Remove module name.
+            return $moduleName;
+        }
         return NULL;
     }
 
@@ -300,13 +321,13 @@ extends Erebot_Module_Base
         else
             $target = $chan = $event->getChan();
 
-        $text   = preg_split('/\s+/', rtrim($event->getText()));
+        $text   = $event->getText()->getTokens(1); // shift "!help" trigger.
+        // Just "!help". Emulate "!help help".
+        if ($text == "")
+            $text = new Erebot_TextWrapper('help');
+        else
+            $text = new Erebot_TextWrapper($text);
         $fmt    = $this->getFormatter($chan);
-        array_shift($text); // Consume the '!help' trigger.
-
-        // Just "!help". Emulate "!help Erebot_Module_Helper help".
-        if (!count($text))
-            $text = array(get_class(), 'help');
 
         // Got a request on a module, check if it exists/has a callback.
         $moduleName = self::_getModuleName($text);
@@ -318,7 +339,7 @@ extends Erebot_Module_Base
         else if (!$this->_checkCallback($fmt, $target, $chan, $moduleName))
             return;
         else
-            $moduleNames = array($moduleName);
+            $moduleNames = array(strtolower($moduleName));
 
         // Now, use the appropriate callback to handle the request.
         // If the request directly concerns a command (!help command),
@@ -326,9 +347,8 @@ extends Erebot_Module_Base
         foreach ($moduleNames as $modName) {
             if (!isset($this->_helpCallbacks[$modName]))
                 continue;
-            $callback   = $this->_helpCallbacks[$modName];
-            $words      = $text;
-            array_unshift($words, $moduleName);
+            $callback = $this->_helpCallbacks[$modName];
+            $words = new Erebot_TextWrapper($modName.' '.((string) $text));
             if ($callback->invoke($event, $words))
                 return;
         }
