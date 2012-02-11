@@ -85,10 +85,12 @@ extends Erebot_Module_Base
                 )
             );
             $this->_connection->addEventHandler($this->_handler);
+        }
 
+        if ($flags & self::RELOAD_MEMBERS) {
             // Add help support for the Helper module itself.
             // This has to be done by hand, because the module
-            // is not registered for this connection yet.
+            // may not be registered for this connection yet.
             $cls = $this->getFactory('!Callable');
             $this->realRegisterHelpMethod(
                 $this,
@@ -321,13 +323,14 @@ extends Erebot_Module_Base
         else
             $target = $chan = $event->getChan();
 
-        $text   = $event->getText()->getTokens(1); // shift "!help" trigger.
-        // Just "!help". Emulate "!help help".
+        $fmt        = $this->getFormatter($chan);
+        $wrapperCls = $this->getFactory('!TextWrapper');
+        $text       = $event->getText()->getTokens(1); // shift "!help" trigger.
+        // Just "!help". Emulate "!help Erebot_Module_Helper help".
         if ($text == "")
-            $text = new Erebot_TextWrapper('help');
+            $text = new $wrapperCls(get_class($this).' help');
         else
-            $text = new Erebot_TextWrapper($text);
-        $fmt    = $this->getFormatter($chan);
+            $text = new $wrapperCls($text);
 
         // Got a request on a module, check if it exists/has a callback.
         $moduleName = self::_getModuleName($text);
@@ -348,7 +351,10 @@ extends Erebot_Module_Base
             if (!isset($this->_helpCallbacks[$modName]))
                 continue;
             $callback = $this->_helpCallbacks[$modName];
-            $words = new Erebot_TextWrapper($modName.' '.((string) $text));
+            $words = ' '.(string) $text;
+            if ($words == ' ')
+                $words = '';
+            $words = new $wrapperCls($modName.$words);
             if ($callback->invoke($event, $words))
                 return;
         }
