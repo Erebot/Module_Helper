@@ -6,7 +6,7 @@
 msgid   ""
 msgstr  "Project-Id-Version: Erebot_Module_Helper 0.1.1\n"
         "Report-Msgid-Bugs-To: i18n@erebot.net\n"
-        "POT-Creation-Date: 2011-10-13 20:31+0200\n"
+        "POT-Creation-Date: 2012-02-11 16:26+0100\n"
         "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
         "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
         "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,7 +15,7 @@ msgstr  "Project-Id-Version: Erebot_Module_Helper 0.1.1\n"
         "Content-Type: text/plain; charset=CHARSET\n"
         "Content-Transfer-Encoding: 8bit\n"
 #
-# File: src/Erebot/Module/Helper.php, line: 140
+# File: src/Erebot/Module/Helper.php, line: 199
 msgid   "<b>Usage</b>: \"!<var name=\"trigger\"/> &lt;<u>Module</u>&gt; "
         "[<u>command</u>]\" or \"!<var name=\"trigger\"/> &lt;<u>command</"
         "u>&gt;\". Provides help about a particular module or command. Use \"!"
@@ -23,7 +23,7 @@ msgid   "<b>Usage</b>: \"!<var name=\"trigger\"/> &lt;<u>Module</u>&gt; "
         "currently loaded modules."
 msgstr  ""
 #
-# File: src/Erebot/Module/Helper.php, line: 122
+# File: src/Erebot/Module/Helper.php, line: 180
 msgid   "<b>Usage</b>: \"!<var name=\"trigger\"/> &lt;<u>Module</u>&gt; "
         "[<u>command</u>]\". Module names must start with an uppercase letter "
         "but are not case-sensitive otherwise. The following modules are "
@@ -31,18 +31,22 @@ msgid   "<b>Usage</b>: \"!<var name=\"trigger\"/> &lt;<u>Module</u>&gt; "
         "></b></for>."
 msgstr  ""
 #
-# File: src/Erebot/Module/Helper.php, line: 51
+# File: src/Erebot/Module/Helper.php, line: 72
 msgid   "Could not register Help trigger"
 msgstr  ""
 #
-# File: src/Erebot/Module/Helper.php, line: 236
+# File: src/Erebot/Module/Helper.php, line: 132
+msgid   "Exception:"
+msgstr  ""
+#
+# File: src/Erebot/Module/Helper.php, line: 365
 msgid   "No help available on command <b><var name=\"command\"/></b>."
 msgstr  ""
 #
-# File: src/Erebot/Module/Helper.php, line: 204
+# File: src/Erebot/Module/Helper.php, line: 259
 msgid   "No help available on module <b><var name=\"module\"/></b>."
 msgstr  ""
 #
-# File: src/Erebot/Module/Helper.php, line: 195
+# File: src/Erebot/Module/Helper.php, line: 250
 msgid   "No such module <b><var name=\"module\"/></b>."
 msgstr  ""
