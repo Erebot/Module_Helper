@@ -3,50 +3,51 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
-msgid   ""
-msgstr  "Project-Id-Version: Erebot_Module_Helper 0.1.1\n"
-        "Report-Msgid-Bugs-To: i18n@erebot.net\n"
-        "POT-Creation-Date: 2012-02-11 16:26+0100\n"
-        "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-        "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-        "Language-Team: LANGUAGE <LL@li.org>\n"
-        "Language: \n"
-        "MIME-Version: 1.0\n"
-        "Content-Type: text/plain; charset=CHARSET\n"
-        "Content-Transfer-Encoding: 8bit\n"
+msgid ""
+msgstr ""
+"Project-Id-Version: Erebot_Module_Helper 0.1.1\n"
+"Report-Msgid-Bugs-To: i18n@erebot.net\n"
+"POT-Creation-Date: 2012-05-21 00:09+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
 #
 # File: src/Erebot/Module/Helper.php, line: 199
-msgid   "<b>Usage</b>: \"!<var name=\"trigger\"/> &lt;<u>Module</u>&gt; "
-        "[<u>command</u>]\" or \"!<var name=\"trigger\"/> &lt;<u>command</"
-        "u>&gt;\". Provides help about a particular module or command. Use \"!"
-        "<var name=\"trigger\"/> <var name=\"this\"/>\" for a list of "
-        "currently loaded modules."
-msgstr  ""
+msgid ""
+"<b>Usage</b>: \"!<var name=\"trigger\"/> &lt;<u>Module</u>&gt; [<u>command</"
+"u>]\" or \"!<var name=\"trigger\"/> &lt;<u>command</u>&gt;\". Provides help "
+"about a particular module or command. Use \"!<var name=\"trigger\"/> <var "
+"name=\"this\"/>\" for a list of currently loaded modules."
+msgstr ""
 #
 # File: src/Erebot/Module/Helper.php, line: 180
-msgid   "<b>Usage</b>: \"!<var name=\"trigger\"/> &lt;<u>Module</u>&gt; "
-        "[<u>command</u>]\". Module names must start with an uppercase letter "
-        "but are not case-sensitive otherwise. The following modules are "
-        "loaded: <for from=\"modules\" item=\"module\"><b><var name=\"module\"/"
-        "></b></for>."
-msgstr  ""
+msgid ""
+"<b>Usage</b>: \"!<var name=\"trigger\"/> &lt;<u>Module</u>&gt; [<u>command</"
+"u>]\". Module names must start with an uppercase letter but are not case-"
+"sensitive otherwise. The following modules are loaded: <for from=\"modules\" "
+"item=\"module\"><b><var name=\"module\"/></b></for>."
+msgstr ""
 #
 # File: src/Erebot/Module/Helper.php, line: 72
-msgid   "Could not register Help trigger"
-msgstr  ""
+msgid "Could not register Help trigger"
+msgstr ""
 #
 # File: src/Erebot/Module/Helper.php, line: 132
-msgid   "Exception:"
-msgstr  ""
+msgid "Exception:"
+msgstr ""
 #
 # File: src/Erebot/Module/Helper.php, line: 365
-msgid   "No help available on command <b><var name=\"command\"/></b>."
-msgstr  ""
+msgid "No help available on command <b><var name=\"command\"/></b>."
+msgstr ""
 #
 # File: src/Erebot/Module/Helper.php, line: 259
-msgid   "No help available on module <b><var name=\"module\"/></b>."
-msgstr  ""
+msgid "No help available on module <b><var name=\"module\"/></b>."
+msgstr ""
 #
 # File: src/Erebot/Module/Helper.php, line: 250
-msgid   "No such module <b><var name=\"module\"/></b>."
-msgstr  ""
+msgid "No such module <b><var name=\"module\"/></b>."
+msgstr ""
