@@ -211,6 +211,7 @@ extends Erebot_Testenv_Module_TestCase
             get_class($this->_fakeModules[0]),
             get_class($this->_fakeModules[1]),
         );
+        sort($modules);
         $modules = preg_replace('/\\s+/', ' ', var_export($modules, TRUE));
         $this->assertSame(
             'PRIVMSG foo :<b>Usage</b>: "!<var value="help"/> '.
