@@ -176,6 +176,7 @@ extends Erebot_Module_Base
         // "!help Erebot_Module_Helper"
         if ($nbArgs == 1 && $words[0] == $moduleName) {
             $modules = array_keys($this->_connection->getModules($chan));
+            sort($modules);
             $msg = $fmt->_(
                 '<b>Usage</b>: "!<var name="trigger"/> &lt;<u>Module</u>&gt; '.
                 '[<u>command</u>]". Module names must start with an '.
