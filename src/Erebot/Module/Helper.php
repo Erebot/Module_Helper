@@ -126,9 +126,8 @@ extends Erebot_Module_Base
             $reflector  = new ReflectionParameter($callback->getCallable(), 0);
         }
         catch (Exception $e) {
-            $bot        = $this->_connection->getBot();
-            $logging    = Plop::getInstance();
-            $logger     = $logging->getLogger(__FILE__);
+            $bot    = $this->_connection->getBot();
+            $logger = Plop::getInstance();
             $logger->exception($bot->gettext('Exception:'), $e);
             return FALSE;
         }
