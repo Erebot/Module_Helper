@@ -197,9 +197,9 @@ extends Erebot_Testenv_Module_TestCase
             "PRIVMSG foo :\002Usage\002: \"!help <\037Module\037> [\037command\037]\" ".
             "or \"!help <\037command\037>\". Provides help about a particular ".
             'module or command. Module names must start with an uppercase letter. '.
-            "The following modules are currently loaded: \002helper\002, ".
-            "\002".strtolower(get_class($this->_fakeModules[1]))."\002 & ".
-            "\002".strtolower(get_class($this->_fakeModules[0]))."\002.",
+            "The following modules are currently loaded: \002Helper\002, ".
+            "\002".get_class($this->_fakeModules[1])."\002 & ".
+            "\002".get_class($this->_fakeModules[0])."\002.",
             $this->_outputBuffer[0]
         );
     }
@@ -244,7 +244,7 @@ extends Erebot_Testenv_Module_TestCase
         $this->assertSame(1, count($this->_outputBuffer));
         $this->assertSame(
             "PRIVMSG foo :No help available on module \002".
-                strtolower(get_class($this->_fakeModules[1]))."\002.",
+                get_class($this->_fakeModules[1])."\002.",
             $this->_outputBuffer[0]
         );
     }
@@ -255,10 +255,10 @@ extends Erebot_Testenv_Module_TestCase
         $this->_module->handleHelp($this->_eventHandler, $event);
         $this->assertSame(1, count($this->_outputBuffer));
         $this->assertSame(
-            "PRIVMSG foo :No such module \002doesnotexist\002. ".
-            "Available modules: \002helper\002, ".
-            "\002".strtolower(get_class($this->_fakeModules[1]))."\002 & ".
-            "\002".strtolower(get_class($this->_fakeModules[0]))."\002.",
+            "PRIVMSG foo :No such module \002DoesNotExist\002. ".
+            "Available modules: \002Helper\002, ".
+            "\002".get_class($this->_fakeModules[1])."\002 & ".
+            "\002".get_class($this->_fakeModules[0])."\002.",
             $this->_outputBuffer[0]
         );
     }

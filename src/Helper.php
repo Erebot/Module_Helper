@@ -166,7 +166,7 @@ class Helper extends \Erebot\Module\Base
 
         $fmt        = $this->getFormatter($chan);
         $trigger    = $this->parseString('trigger', 'help');
-        $moduleName = strtolower(get_called_class());
+        $moduleName = get_called_class();
 
         if ($words[0] !== $moduleName || (isset($words[1]) && $words[1] != $trigger)) {
             return false;
@@ -316,27 +316,30 @@ class Helper extends \Erebot\Module\Base
         // Got a request on a module, check if it exists/has a callback.
         $moduleName = self::getModuleName($text);
         if ($moduleName === null) {
-            $moduleNames = array_map('strtolower', $this->getModules($chan));
+            $moduleNames = $this->getModules($chan);
         } elseif (!$this->checkCallback($fmt, $target, $chan, $moduleName)) {
             return;
         } else {
-            $moduleNames = array(strtolower($moduleName));
+            $moduleNames = array($moduleName);
         }
 
         // Now, use the appropriate callback to handle the request.
         // If the request directly concerns a command (!help command),
         // loop through all callbacks until one handles the request.
+        $words = ' '.(string) $text;
+        if ($words === ' ') {
+            $words = '';
+        }
         foreach ($moduleNames as $modName) {
             if (!isset($this->helpCallbacks[$modName])) {
                 continue;
             }
             $callback = $this->helpCallbacks[$modName];
-            $words = ' '.(string) $text;
-            if ($words === ' ') {
-                $words = '';
+            if ($callback($event, new $wrapperCls('Erebot\\Module\\' . $modName . $words))) {
+                return;
             }
-            $words = new $wrapperCls('erebot\\module\\' . $modName . $words);
-            if ($callback($event, $words)) {
+            // Fallback to unprefixed module name.
+            if ($callback($event, new $wrapperCls($modName . $words))) {
                 return;
             }
         }
@@ -367,6 +370,6 @@ class Helper extends \Erebot\Module\Base
         if (!strncasecmp($moduleName, 'Erebot\\Module\\', 14)) {
             $moduleName = (string) substr($moduleName, 14);
         }
-        return strtolower($moduleName);
+        return $moduleName;
     }
 }
