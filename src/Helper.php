@@ -344,6 +344,14 @@ class Helper extends \Erebot\Module\Base
             }
         }
 
+        if ($moduleName !== null) {
+            $msg = $fmt->_(
+                'No help available on module <b><var name="module"/></b>.',
+                array('module' => $moduleName)
+            );
+            return $this->sendMessage($target, $msg);
+        }
+
         // No callback handled this request.
         // We assume no help is available.
         $msg = $fmt->_(
