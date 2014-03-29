@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Erebot_Module_Helper dev-master\n"
 "Report-Msgid-Bugs-To: i18n@erebot.net\n"
-"POT-Creation-Date: 2013-08-15 14:41+0200\n"
+"POT-Creation-Date: 2013-12-31 11:39+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,20 +16,13 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 #
-# File: src/Erebot/Module/Helper.php, line: 199
+# File: src/Erebot/Module/Helper.php, line: 191
 msgid ""
 "<b>Usage</b>: \"!<var name=\"trigger\"/> &lt;<u>Module</u>&gt; [<u>command</"
 "u>]\" or \"!<var name=\"trigger\"/> &lt;<u>command</u>&gt;\". Provides help "
-"about a particular module or command. Use \"!<var name=\"trigger\"/> <var "
-"name=\"this\"/>\" for a list of currently loaded modules."
-msgstr ""
-#
-# File: src/Erebot/Module/Helper.php, line: 180
-msgid ""
-"<b>Usage</b>: \"!<var name=\"trigger\"/> &lt;<u>Module</u>&gt; [<u>command</"
-"u>]\". Module names must start with an uppercase letter but are not case-"
-"sensitive otherwise. The following modules are loaded: <for from=\"modules\" "
-"item=\"module\"><b><var name=\"module\"/></b></for>."
+"about a particular module or command. Module names must start with an "
+"uppercase letter. The following modules are currently loaded: <for from="
+"\"modules\" item=\"module\"><b><var name=\"module\"/></b></for>."
 msgstr ""
 #
 # File: src/Erebot/Module/Helper.php, line: 72
@@ -44,10 +37,10 @@ msgstr ""
 msgid "No help available on command <b><var name=\"command\"/></b>."
 msgstr ""
 #
-# File: src/Erebot/Module/Helper.php, line: 259
+# File: src/Erebot/Module/Helper.php, line: 254
 msgid "No help available on module <b><var name=\"module\"/></b>."
 msgstr ""
 #
-# File: src/Erebot/Module/Helper.php, line: 250
+# File: src/Erebot/Module/Helper.php, line: 245
 msgid "No such module <b><var name=\"module\"/></b>."
 msgstr ""

@@ -1,4 +1,5 @@
 {
+    "minimum-stability": "dev",
     "name": "erebot/helper-module",
     "description": "Erebot module that provides help",
     "keywords": ["Erebot", "IRC", "bot", "module"],
@@ -14,7 +15,7 @@
     "support": {
         "email": "erebot@erebot.net",
         "issues": "https://github.com/Erebot/Erebot_Module_Helper/issues",
-        "wiki": "http://erebot.github.com/Erebot_Module_Helper/",
+        "wiki": "http://erebot.github.io/Erebot_Module_Helper/",
         "irc": "irc://irc.iiens.net/Erebot",
         "source": "https://github.com/Erebot/Erebot_Module_Helper"
     },
@@ -30,8 +31,8 @@
         "erebot/testenv": "dev-master"
     },
     "autoload": {
-        "psr-0": {
-            "Erebot": "src/"
+        "psr-4": {
+            "Erebot\\Module\\": "src/"
         }
     },
     "extra": {

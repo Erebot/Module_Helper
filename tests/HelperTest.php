@@ -16,8 +16,19 @@
     along with Erebot.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+namespace Erebot\Module {
+    abstract class TestModule extends \Erebot\Module\Base
+    {
+    }
+
+    abstract class TestModule2 extends \Erebot\Module\Base
+    {
+    }
+}
+
+namespace {
 abstract class  TextWrapper
-implements      Erebot_Interface_TextWrapper
+implements      \Erebot\Interfaces\TextWrapper
 {
     private $_chunks;
 
@@ -41,20 +52,15 @@ implements      Erebot_Interface_TextWrapper
         return $this->_chunks[$offset];
     }
 
+    public function offsetExists($offset)
+    {
+        return isset($this->_chunks[$offset]);
+    }
+
     public function count()
     {
         return count($this->_chunks);
     }
-}
-
-abstract class  TestModule
-extends         Erebot_Module_Base
-{
-}
-
-abstract class  TestModule2
-extends         Erebot_Module_Base
-{
 }
 
 class   HelperTest
@@ -62,7 +68,7 @@ extends Erebot_Testenv_Module_TestCase
 {
     public function setUp()
     {
-        $this->_module = new Erebot_Module_Helper(NULL);
+        $this->_module = new \Erebot\Module\Helper(NULL);
 
         $mock = $this->getMockForAbstractClass(
                 'TextWrapper',
@@ -81,22 +87,22 @@ extends Erebot_Testenv_Module_TestCase
             ->method('parseString')
             ->will($this->returnValue("help"));
 
-        $this->_module->reload(
+        $this->_module->reloadModule(
             $this->_connection,
-            Erebot_Module_Base::RELOAD_MEMBERS
+            \Erebot\Module\Base::RELOAD_MEMBERS
         );
 
         // Create two fake modules for the tests.
         $this->_fakeModules = array(
             $this->getMockForAbstractClass(
-                'TestModule',
+                '\\Erebot\\Module\\TestModule',
                 array(),
                 '',
                 FALSE,
                 FALSE
             ),
             $this->getMockForAbstractClass(
-                'TestModule2',
+                '\\Erebot\\Module\\TestModule2',
                 array(),
                 '',
                 FALSE,
@@ -111,11 +117,9 @@ extends Erebot_Testenv_Module_TestCase
             ->will(
                 $this->returnValue(
                     array(
-                        'Erebot_Module_Helper' => $this->_module,
-                        get_class($this->_fakeModules[0]) =>
-                            $this->_fakeModules[0],
-                        get_class($this->_fakeModules[1]) =>
-                            $this->_fakeModules[1],
+                        '\\Erebot\\Module\\Helper' => $this->_module,
+                        get_class($this->_fakeModules[0]) => $this->_fakeModules[0],
+                        get_class($this->_fakeModules[1]) => $this->_fakeModules[1],
                     )
                 )
             );
@@ -126,22 +130,21 @@ extends Erebot_Testenv_Module_TestCase
             ->will($this->returnValue($this->_module));
 
         // Register some method to return help for the first fake module.
-        $cls = $this->_factory['!Callable'];
         $this->_module->realRegisterHelpMethod(
             $this->_fakeModules[0],
-            new $cls(array($this, 'getFakeHelp'))
+            \Erebot\CallableWrapper::wrap(array($this, 'getFakeHelp'))
         );
     }
 
     public function tearDown()
     {
-        $this->_module->unload();
+        $this->_module->unloadModule();
         parent::tearDown();
     }
 
     public function getFakeHelp(
-        Erebot_Interface_Event_Base_TextMessage $event,
-        Erebot_Interface_TextWrapper            $words
+        \Erebot\Interfaces\Event\Base\TextMessage $event,
+        \Erebot\Interfaces\TextWrapper            $words
     )
     {
         if (count($words) == 1) {
@@ -162,7 +165,7 @@ extends Erebot_Testenv_Module_TestCase
     protected function _getEvent($text)
     {
         $event = $this->getMock(
-            'Erebot_Interface_Event_PrivateText',
+            '\\Erebot\\Interfaces\\Event\\PrivateText',
             array(), array(), '', FALSE, FALSE
         );
 
@@ -191,34 +194,12 @@ extends Erebot_Testenv_Module_TestCase
         $this->_module->handleHelp($this->_eventHandler, $event);
         $this->assertSame(1, count($this->_outputBuffer));
         $this->assertSame(
-            'PRIVMSG foo :<b>Usage</b>: "!<var value="help"/> '.
-            '&lt;<u>Module</u>&gt; [<u>command</u>]" or "!<var value="help"/> '.
-            '&lt;<u>command</u>&gt;". Provides help about a particular '.
-            'module or command. Use "!<var value="help"/> '.
-            '<var value="Erebot_Module_Helper"/>" for a list of currently '.
-            'loaded modules.',
-            $this->_outputBuffer[0]
-        );
-    }
-
-    public function testHelpForHelperModule()
-    {
-        $event = $this->_getEvent("!help Erebot_Module_Helper");
-        $this->_module->handleHelp($this->_eventHandler, $event);
-        $this->assertSame(1, count($this->_outputBuffer));
-        $modules = array(
-            'Erebot_Module_Helper',
-            get_class($this->_fakeModules[0]),
-            get_class($this->_fakeModules[1]),
-        );
-        sort($modules);
-        $modules = preg_replace('/\\s+/', ' ', var_export($modules, TRUE));
-        $this->assertSame(
-            'PRIVMSG foo :<b>Usage</b>: "!<var value="help"/> '.
-            '&lt;<u>Module</u>&gt; [<u>command</u>]". Module names must '.
-            'start with an uppercase letter but are not case-sensitive '.
-            'otherwise. The following modules are loaded: <for from="'.
-            $modules.'" item="module"><b><var name="module"/></b></for>.',
+            "PRIVMSG foo :\002Usage\002: \"!help <\037Module\037> [\037command\037]\" ".
+            "or \"!help <\037command\037>\". Provides help about a particular ".
+            'module or command. Module names must start with an uppercase letter. '.
+            "The following modules are currently loaded: \002helper\002, ".
+            "\002".strtolower(get_class($this->_fakeModules[1]))."\002 & ".
+            "\002".strtolower(get_class($this->_fakeModules[0]))."\002.",
             $this->_outputBuffer[0]
         );
     }
@@ -251,8 +232,7 @@ extends Erebot_Testenv_Module_TestCase
         $this->_module->handleHelp($this->_eventHandler, $event);
         $this->assertSame(1, count($this->_outputBuffer));
         $this->assertSame(
-            'PRIVMSG foo :No help available on command <b><var '.
-                'value="does_not_exist"/></b>.',
+            "PRIVMSG foo :No help available on command \002does_not_exist\002.",
             $this->_outputBuffer[0]
         );
     }
@@ -263,8 +243,8 @@ extends Erebot_Testenv_Module_TestCase
         $this->_module->handleHelp($this->_eventHandler, $event);
         $this->assertSame(1, count($this->_outputBuffer));
         $this->assertSame(
-            'PRIVMSG foo :No help available on module <b><var value="'.
-                get_class($this->_fakeModules[1]).'"/></b>.',
+            "PRIVMSG foo :No help available on module \002".
+                strtolower(get_class($this->_fakeModules[1]))."\002.",
             $this->_outputBuffer[0]
         );
     }
@@ -275,9 +255,12 @@ extends Erebot_Testenv_Module_TestCase
         $this->_module->handleHelp($this->_eventHandler, $event);
         $this->assertSame(1, count($this->_outputBuffer));
         $this->assertSame(
-            'PRIVMSG foo :No such module <b><var value="DoesNotExist"/></b>.',
+            "PRIVMSG foo :No such module \002doesnotexist\002. ".
+            "Available modules: \002helper\002, ".
+            "\002".strtolower(get_class($this->_fakeModules[1]))."\002 & ".
+            "\002".strtolower(get_class($this->_fakeModules[0]))."\002.",
             $this->_outputBuffer[0]
         );
     }
 }
-
+} // Namespace

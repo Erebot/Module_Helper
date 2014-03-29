@@ -16,30 +16,31 @@
     along with Erebot.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+namespace Erebot\Module;
+
 /**
  * \brief
  *      A module that can be used by other modules
  *      to register a method to call whenever someone
  *      asks for help on them.
  */
-class   Erebot_Module_Helper
-extends Erebot_Module_Base
+class Helper extends \Erebot\Module\Base
 {
     /// Token associated with this module's trigger.
-    protected $_trigger;
+    protected $trigger;
 
     /// Handler used by this module to detect help requests.
-    protected $_handler;
+    protected $handler;
 
     /// Maps each module to the method that handles help requests for it.
-    protected $_helpCallbacks;
+    protected $helpCallbacks;
 
 
     /**
      * This method is called whenever the module is (re)loaded.
      *
      * \param int $flags
-     *      A bitwise OR of the Erebot_Module_Base::RELOAD_*
+     *      A bitwise OR of the Erebot::Module::Base::RELOAD_*
      *      constants. Your method should take proper actions
      *      depending on the value of those flags.
      *
@@ -47,54 +48,49 @@ extends Erebot_Module_Base
      *      See the documentation on individual RELOAD_*
      *      constants for a list of possible values.
      */
-    public function _reload($flags)
+    public function reload($flags)
     {
         if (!($flags & self::RELOAD_INIT)) {
-            $registry =& $this->_connection->getModule(
-                'Erebot_Module_TriggerRegistry'
+            $registry =& $this->connection->getModule(
+                '\\Erebot\\Module\\TriggerRegistry'
             );
-            $matchAny = Erebot_Utils::getVStatic($registry, 'MATCH_ANY');
-
-            $this->_connection->removeEventHandler($this->_handler);
-            $registry->freeTriggers($this->_trigger, $matchAny);
+            $this->connection->removeEventHandler($this->handler);
+            $registry->freeTriggers($this->trigger, $registry::MATCH_ANY);
         }
 
         if ($flags & self::RELOAD_HANDLERS) {
-            $registry = $this->_connection->getModule(
-                'Erebot_Module_TriggerRegistry'
+            $registry = $this->connection->getModule(
+                '\\Erebot\\Module\\TriggerRegistry'
             );
-            $matchAny = Erebot_Utils::getVStatic($registry, 'MATCH_ANY');
-
             $trigger        = $this->parseString('trigger', 'help');
-            $this->_trigger = $registry->registerTriggers($trigger, $matchAny);
-            if ($this->_trigger === NULL) {
-                $fmt = $this->getFormatter(FALSE);
-                throw new Exception($fmt->_('Could not register Help trigger'));
+            $this->trigger = $registry->registerTriggers($trigger, $registry::MATCH_ANY);
+            if ($this->trigger === null) {
+                $fmt = $this->getFormatter(false);
+                throw new \Exception($fmt->_('Could not register Help trigger'));
             }
 
-            $this->_handler = new Erebot_EventHandler(
-                new Erebot_Callable(array($this, 'handleHelp')),
-                new Erebot_Event_Match_All(
-                    new Erebot_Event_Match_InstanceOf(
-                        'Erebot_Interface_Event_Base_TextMessage'
+            $this->handler = new \Erebot\EventHandler(
+                \Erebot\CallableWrapper::wrap(array($this, 'handleHelp')),
+                new \Erebot\Event\Match\All(
+                    new \Erebot\Event\Match\Type(
+                        '\\Erebot\\Interfaces\\Event\\Base\\TextMessage'
                     ),
-                    new Erebot_Event_Match_Any(
-                        new Erebot_Event_Match_TextStatic($trigger, TRUE),
-                        new Erebot_Event_Match_TextWildcard($trigger.' *', TRUE)
+                    new \Erebot\Event\Match\Any(
+                        new \Erebot\Event\Match\TextStatic($trigger, true),
+                        new \Erebot\Event\Match\TextWildcard($trigger.' *', true)
                     )
                 )
             );
-            $this->_connection->addEventHandler($this->_handler);
+            $this->connection->addEventHandler($this->handler);
         }
 
         if ($flags & self::RELOAD_MEMBERS) {
             // Add help support for the Helper module itself.
             // This has to be done by hand, because the module
             // may not be registered for this connection yet.
-            $cls = $this->getFactory('!Callable');
             $this->realRegisterHelpMethod(
                 $this,
-                new $cls(array($this, 'getHelp'))
+                \Erebot\CallableWrapper::wrap(array($this, 'getHelp'))
             );
         }
     }
@@ -103,118 +99,104 @@ extends Erebot_Module_Base
      * Registers a method to call back whenever
      * someone requests help on a specific module.
      *
-     * \param Erebot_Module_Base $module
+     * \param Erebot::Module::Base $module
      *      The module the method provides help for.
      *
-     * \param Erebot_Interface_Callable $callback
+     * \param Erebot::CallableInterface $callback
      *      The method/function to call whenever
      *      someone asks for help on that particular
      *      module or a command provided by it.
      *
      * \retval bool
-     *      TRUE if the call succeeded,
-     *      FALSE otherwise.
+     *      \b true if the call succeeded,
+     *      \b false otherwise.
      */
     public function realRegisterHelpMethod(
-        Erebot_Module_Base          $module,
-        Erebot_Interface_Callable   $callback
-    )
-    {
-        // Works for all kinds of PHP callbacks so far...
-        // (functions, [static] methods, invokable objects & closures)
+        \Erebot\Module\Base $module,
+        \Erebot\CallableInterface $callback
+    ) {
         try {
-            $reflector  = new ReflectionParameter($callback->getCallable(), 0);
-        }
-        catch (Exception $e) {
-            $bot    = $this->_connection->getBot();
-            $logger = Plop::getInstance();
+            /// @FIXME This is pretty intrusive...
+            $reflector  = new \ReflectionObject($callback);
+            $reflector  = $reflector->getProperty('callable');
+            $reflector->setAccessible(true);
+            $callable   = $reflector->getValue($callback);
+            $reflector->setAccessible(false);
+            $reflector  = new \ReflectionParameter($callable, 0);
+        } catch (\Exception $e) {
+            $bot    = $this->connection->getBot();
+            $logger = \Plop::getInstance();
             $logger->exception($bot->gettext('Exception:'), $e);
-            return FALSE;
+            return false;
         }
 
-        $moduleName = strtolower(get_class($module));
         $cls        = $reflector->getClass();
-        if ($cls === NULL || !$cls->implementsInterface(
-            'Erebot_Interface_Event_Base_MessageCapable'
-        ))
-            throw new Erebot_InvalidValueException('Invalid signature');
+        if ($cls === null || !$cls->implementsInterface(
+            '\\Erebot\\Interfaces\\Event\\Base\\MessageCapable'
+        )) {
+            throw new \Erebot\InvalidValueException('Invalid signature');
+        }
 
-        $this->_helpCallbacks[$moduleName] = $callback;
-        return TRUE;
+        $this->helpCallbacks[static::normalizeModule(get_class($module))] = $callback;
+        return true;
     }
 
     /**
      * Provides help about this module.
      *
-     * \param Erebot_Interface_Event_Base_TextMessage $event
+     * \param Erebot::Interfaces::Event::Base::TextMessage $event
      *      Some help request.
      *
-     * \param Erebot_Interface_TextWrapper $words
+     * \param Erebot::Interfaces::TextWrapper $words
      *      Parameters passed with the request. This is the same
      *      as this module's name when help is requested on the
      *      module itself (in opposition with help on a specific
      *      command provided by the module).
      */
     public function getHelp(
-        Erebot_Interface_Event_Base_TextMessage $event,
-        Erebot_Interface_TextWrapper            $words
-    )
-    {
-        if ($event instanceof Erebot_Interface_Event_Base_Private) {
+        \Erebot\Interfaces\Event\Base\TextMessage $event,
+        \Erebot\Interfaces\TextWrapper $words
+    ) {
+        if ($event instanceof \Erebot\Interfaces\Event\Base\PrivateMessage) {
             $target = $event->getSource();
-            $chan   = NULL;
-        }
-        else
+            $chan   = null;
+        } else {
             $target = $chan = $event->getChan();
+        }
 
         $fmt        = $this->getFormatter($chan);
         $trigger    = $this->parseString('trigger', 'help');
-        $moduleName = strtolower(get_class());
-        $nbArgs     = count($words);
+        $moduleName = strtolower(get_called_class());
 
-        // "!help Erebot_Module_Helper"
-        if ($nbArgs == 1 && $words[0] == $moduleName) {
-            $modules = array_keys($this->_connection->getModules($chan));
-            sort($modules);
-            $msg = $fmt->_(
-                '<b>Usage</b>: "!<var name="trigger"/> &lt;<u>Module</u>&gt; '.
-                '[<u>command</u>]". Module names must start with an '.
-                'uppercase letter but are not case-sensitive otherwise. '.
-                'The following modules are loaded: <for from="modules" '.
-                'item="module"><b><var name="module"/></b></for>.',
-                array(
-                    'modules' => $modules,
-                    'trigger' => $trigger,
-                )
-            );
-            $this->sendMessage($target, $msg);
-            return TRUE;
+        if ($words[0] !== $moduleName || (isset($words[1]) && $words[1] != $trigger)) {
+            return false;
         }
 
-        if ($nbArgs < 2 || $words[1] != $trigger)
-            return FALSE;
+        // "!help Helper <help_trigger>"
 
-        // "!help Helper *" or just "!help"
         $msg = $fmt->_(
             '<b>Usage</b>: "!<var name="trigger"/> &lt;<u>Module</u>&gt; '.
             '[<u>command</u>]" or "!<var name="trigger"/> '.
             '&lt;<u>command</u>&gt;". Provides help about a particular '.
-            'module or command. Use "!<var name="trigger"/> <var '.
-            'name="this"/>" for a list of currently loaded modules.',
+            'module or command. Module names must start with an '.
+            'uppercase letter. The following modules are currently loaded: '.
+            '<for from="modules" item="module"><b><var name="module"/></b>'.
+            '</for>.',
             array(
                 'this' => get_class(),
+                'modules' => $this->getModules($chan),
                 'trigger' => $trigger,
             )
         );
         $this->sendMessage($target, $msg);
-        return TRUE;
+        return true;
     }
 
     /**
      * Checks whether the given module exists and whether
      * an help callback has been registered for that module.
      *
-     * \param Erebot_Interface_Styling $fmt
+     * \param Erebot::StylingInterface $fmt
      *      Formatter for messages produced by this method.
      *
      * \param string $target
@@ -222,7 +204,7 @@ extends Erebot_Module_Base
      *      emitted by this method will be sent to.
      *
      * \param mixed $chan
-     *      Either the name of an IRC channel or NULL.
+     *      Either the name of an IRC channel or \b null.
      *      This is used to retrieve a list of all modules
      *      enabled for that channel.
      *
@@ -230,52 +212,52 @@ extends Erebot_Module_Base
      *      Name of the module the help request is about.
      *
      * \retval bool
-     *      TRUE if the given module exists and some callback
+     *      \b true if the given module exists and some callback
      *      was registered to handle help requests for it, or
-     *      FALSE otherwise.
+     *      \b false otherwise.
      */
-    protected function _checkCallback($fmt, $target, $chan, $moduleName)
+    protected function checkCallback(\Erebot\StylingInterface $fmt, $target, $chan, $moduleName)
     {
-        $found = FALSE;
-        $chanModules = array_keys($this->_connection->getModules($chan));
-        foreach ($chanModules as $name) {
-            if (!strcasecmp($name, $moduleName)) {
-                $found = TRUE;
-                break;
-            }
-        }
+        $found          = false;
+        $chanModules    = $this->getModules($chan);
+        $normName       = static::normalizeModule($moduleName);
 
-        if (!$found) {
+        if (!in_array($normName, $chanModules)) {
             $msg = $fmt->_(
-                'No such module <b><var name="module"/></b>.',
-                array('module' => $moduleName)
+                'No such module <b><var name="request"/></b>. '.
+                'Available modules: <for from="modules" item="module">'.
+                '<b><var name="module"/></b></for>.',
+                array(
+                    'request' => $moduleName,
+                    'modules' => $chanModules,
+                )
             );
             $this->sendMessage($target, $msg);
-            return FALSE;
+            return false;
         }
 
-        if (!isset($this->_helpCallbacks[strtolower($moduleName)])) {
+        if (!isset($this->helpCallbacks[$normName])) {
             $msg = $fmt->_(
                 'No help available on module <b><var name="module"/></b>.',
                 array('module' => $moduleName)
             );
             $this->sendMessage($target, $msg);
-            return FALSE;
+            return false;
         }
-        return TRUE;
+        return true;
     }
 
     /**
      * Extracts the name of a module from some
      * help request.
      *
-     * \param Erebot_Interface_TextWrapper $text
+     * \param Erebot::Interfaces::TextWrapper $text
      *      Text of the help request from which
      *      the module name will be extracted.
      *
      * \retval mixed
      *      Either the name of the module the
-     *      help request relates to or NULL
+     *      help request relates to or \b null
      *      if the request is about a command.
      *
      * \post
@@ -283,28 +265,26 @@ extends Erebot_Module_Base
      *      module, the module's name is removed
      *      from the request.
      */
-    static protected function _getModuleName(
-        Erebot_Interface_TextWrapper &$text
-    )
+    protected static function getModuleName(\Erebot\Interfaces\TextWrapper &$text)
     {
         // If the first letter of the first word is in uppercase,
         // this is a request for help on a module (!help Module).
         $first = substr($text[0], 0, 1);
-        if ($first !== FALSE && $first == strtoupper($first)) {
-            $moduleName = $text[0];
-            $text       = $text->getTokens(1); // Remove module name.
+        if ($first !== false && $first === strtoupper($first) || $first === '\\') {
+            $moduleName = static::normalizeModule($text[0]);
+            $text = $text->getTokens(1); // Remove module name.
             return $moduleName;
         }
-        return NULL;
+        return null;
     }
 
     /**
      * Handles a request for help on some module/command.
      *
-     * \param Erebot_Interface_EventHandler $handler
+     * \param Erebot::Interfaces::EventHandler $handler
      *      Handler that triggered this event.
      *
-     * \param Erebot_Interface_Event_Base_TextMessage $event
+     * \param Erebot::Interfaces::Event::Base::TextMessage $event
      *      Contents of the help request (eg. name of a module
      *      or command).
      *
@@ -312,51 +292,53 @@ extends Erebot_Module_Base
      * @SuppressWarnings(PHPMD.UnusedLocalVariable)
      */
     public function handleHelp(
-        Erebot_Interface_EventHandler           $handler,
-        Erebot_Interface_Event_Base_TextMessage $event
-    )
-    {
-        if ($event instanceof Erebot_Interface_Event_Base_Private) {
+        \Erebot\Interfaces\EventHandler $handler,
+        \Erebot\Interfaces\Event\Base\TextMessage $event
+    ) {
+        if ($event instanceof \Erebot\Interfaces\Event\Base\PrivateMessage) {
             $target = $event->getSource();
-            $chan   = NULL;
-        }
-        else
+            $chan   = null;
+        } else {
             $target = $chan = $event->getChan();
+        }
 
         $fmt        = $this->getFormatter($chan);
         $wrapperCls = $this->getFactory('!TextWrapper');
         $text       = $event->getText()->getTokens(1); // shift "!help" trigger.
-        // Just "!help". Emulate "!help Erebot_Module_Helper help".
-        if ($text == "")
-            $text = new $wrapperCls(get_class($this).' help');
-        else
+
+        // Just "!help". Emulate "!help \Erebot\Module\Helper".
+        if ($text == "") {
+            $text = new $wrapperCls(get_called_class());
+        } else {
             $text = new $wrapperCls($text);
+        }
 
         // Got a request on a module, check if it exists/has a callback.
-        $moduleName = self::_getModuleName($text);
-        if ($moduleName === NULL)
-            $moduleNames = array_map(
-                'strtolower',
-                array_keys($this->_connection->getModules($chan))
-            );
-        else if (!$this->_checkCallback($fmt, $target, $chan, $moduleName))
+        $moduleName = self::getModuleName($text);
+        if ($moduleName === null) {
+            $moduleNames = array_map('strtolower', $this->getModules($chan));
+        } elseif (!$this->checkCallback($fmt, $target, $chan, $moduleName)) {
             return;
-        else
+        } else {
             $moduleNames = array(strtolower($moduleName));
+        }
 
         // Now, use the appropriate callback to handle the request.
         // If the request directly concerns a command (!help command),
         // loop through all callbacks until one handles the request.
         foreach ($moduleNames as $modName) {
-            if (!isset($this->_helpCallbacks[$modName]))
+            if (!isset($this->helpCallbacks[$modName])) {
                 continue;
-            $callback = $this->_helpCallbacks[$modName];
+            }
+            $callback = $this->helpCallbacks[$modName];
             $words = ' '.(string) $text;
-            if ($words == ' ')
+            if ($words === ' ') {
                 $words = '';
-            $words = new $wrapperCls($modName.$words);
-            if ($callback->invoke($event, $words))
+            }
+            $words = new $wrapperCls('erebot\\module\\' . $modName . $words);
+            if ($callback($event, $words)) {
                 return;
+            }
         }
 
         // No callback handled this request.
@@ -367,5 +349,24 @@ extends Erebot_Module_Base
         );
         $this->sendMessage($target, $msg);
     }
-}
 
+    protected function getModules($chan)
+    {
+        // Get modules and normalize them.
+        $modules = array_keys($this->connection->getModules($chan));
+        $modules = array_map(array(get_called_class(), 'normalizeModule'), $modules);
+        sort($modules);
+        return $modules;
+    }
+
+    public static function normalizeModule($moduleName)
+    {
+        // Remove "\Erebot\Module\" or "\" prefix if present,
+        // and lowercase the module name.
+        $moduleName = ltrim($moduleName, '\\');
+        if (!strncasecmp($moduleName, 'Erebot\\Module\\', 14)) {
+            $moduleName = (string) substr($moduleName, 14);
+        }
+        return strtolower($moduleName);
+    }
+}
