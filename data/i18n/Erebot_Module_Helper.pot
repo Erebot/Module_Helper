@@ -5,9 +5,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Erebot_Module_Helper dev-master\n"
+"Project-Id-Version: Erebot_Module_Helper 1.0.x-dev\n"
 "Report-Msgid-Bugs-To: i18n@erebot.net\n"
-"POT-Creation-Date: 2013-12-31 11:39+0100\n"
+"POT-Creation-Date: 2014-03-29 15:14+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 #
-# File: src/Erebot/Module/Helper.php, line: 191
+# File: src/Helper.php, line: 178
 msgid ""
 "<b>Usage</b>: \"!<var name=\"trigger\"/> &lt;<u>Module</u>&gt; [<u>command</"
 "u>]\" or \"!<var name=\"trigger\"/> &lt;<u>command</u>&gt;\". Provides help "
@@ -25,22 +25,24 @@ msgid ""
 "\"modules\" item=\"module\"><b><var name=\"module\"/></b></for>."
 msgstr ""
 #
-# File: src/Erebot/Module/Helper.php, line: 72
+# File: src/Helper.php, line: 69
 msgid "Could not register Help trigger"
 msgstr ""
 #
-# File: src/Erebot/Module/Helper.php, line: 131
+# File: src/Helper.php, line: 129
 msgid "Exception:"
 msgstr ""
 #
-# File: src/Erebot/Module/Helper.php, line: 365
+# File: src/Helper.php, line: 347
 msgid "No help available on command <b><var name=\"command\"/></b>."
 msgstr ""
 #
-# File: src/Erebot/Module/Helper.php, line: 254
+# File: src/Helper.php, line: 241
 msgid "No help available on module <b><var name=\"module\"/></b>."
 msgstr ""
 #
-# File: src/Erebot/Module/Helper.php, line: 245
-msgid "No such module <b><var name=\"module\"/></b>."
+# File: src/Helper.php, line: 227
+msgid ""
+"No such module <b><var name=\"request\"/></b>. Available modules: <for from="
+"\"modules\" item=\"module\"><b><var name=\"module\"/></b></for>."
 msgstr ""
