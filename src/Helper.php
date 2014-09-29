@@ -125,7 +125,7 @@ class Helper extends \Erebot\Module\Base
             $reflector  = new \ReflectionParameter($callable, 0);
         } catch (\Exception $e) {
             $bot    = $this->connection->getBot();
-            $logger = \Plop::getInstance();
+            $logger = \Plop\Plop::getInstance();
             $logger->exception($bot->gettext('Exception:'), $e);
             return false;
         }
