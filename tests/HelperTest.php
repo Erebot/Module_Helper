@@ -164,10 +164,7 @@ extends Erebot_Testenv_Module_TestCase
 
     protected function _getEvent($text)
     {
-        $event = $this->getMock(
-            '\\Erebot\\Interfaces\\Event\\PrivateText',
-            array(), array(), '', FALSE, FALSE
-        );
+        $event = $this->getMockBuilder('\\Erebot\\Interfaces\\Event\\PrivateText')->getMock();
 
         $wrapperCls = $this->_factory['!TextWrapper'];
         $wrapped    = new $wrapperCls($text);
