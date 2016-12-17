@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Erebot_Module_Helper 1.0.x-dev\n"
 "Report-Msgid-Bugs-To: i18n@erebot.net\n"
-"POT-Creation-Date: 2014-03-29 15:14+0100\n"
+"POT-Creation-Date: 2016-12-17 22:30+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -33,11 +33,12 @@ msgstr ""
 msgid "Exception:"
 msgstr ""
 #
-# File: src/Helper.php, line: 347
+# File: src/Helper.php, line: 358
 msgid "No help available on command <b><var name=\"command\"/></b>."
 msgstr ""
 #
 # File: src/Helper.php, line: 241
+# File: src/Helper.php, line: 349
 msgid "No help available on module <b><var name=\"module\"/></b>."
 msgstr ""
 #
