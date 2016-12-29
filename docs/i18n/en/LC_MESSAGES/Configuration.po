@@ -1,0 +1,86 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2011-2016, Erebot
+# This file is distributed under the same license as the Erebot_Module_Helper package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Erebot_Module_Helper 1.0.x-dev\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-12-29 22:50+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+#
+# File: ../src/Configuration.rst, line: 10
+msgid "Configuration"
+msgstr "Configuration"
+#
+# File: ../src/Configuration.rst, line: 15
+msgid "Options"
+msgstr "Options"
+#
+# File: ../src/Configuration.rst, line: 17
+msgid "This module provides only one configuration option."
+msgstr "This module provides only one configuration option."
+#
+# File: ../src/Configuration.rst, line: 0
+msgid "Options for |project|"
+msgstr "Options for |project|"
+#
+# File: ../src/Configuration.rst, line: 22
+msgid "Name"
+msgstr "Name"
+#
+# File: ../src/Configuration.rst, line: 22
+msgid "Type"
+msgstr "Type"
+#
+# File: ../src/Configuration.rst, line: 22
+msgid "Default value"
+msgstr "Default value"
+#
+# File: ../src/Configuration.rst, line: 22
+msgid "Description"
+msgstr "Description"
+#
+# File: ../src/Configuration.rst, line: 24
+msgid "trigger"
+msgstr "trigger"
+#
+# File: ../src/Configuration.rst, line: 24
+msgid "string"
+msgstr "string"
+#
+# File: ../src/Configuration.rst, line: 24
+msgid "\"help\""
+msgstr "\"help\""
+#
+# File: ../src/Configuration.rst, line: 24
+msgid "The command to use to get help on other modules and commands."
+msgstr "The command to use to get help on other modules and commands."
+#
+# File: ../src/Configuration.rst, line: 31
+msgid "Example"
+msgstr "Example"
+#
+# File: ../src/Configuration.rst, line: 33
+msgid ""
+"The recommended way to use this module is to have it loaded at the general "
+"configuration level and to disable it only for specific networks, if needed."
+msgstr ""
+"The recommended way to use this module is to have it loaded at the general "
+"configuration level and to disable it only for specific networks, if needed."
+#
+# File: ../src/Configuration.rst, line: 36
+msgid ""
+"The listing below shows how to change this module's trigger so that help "
+"becomes available using the command ``!helpme`` (instead of ``!help``)."
+msgstr ""
+"The listing below shows how to change this module's trigger so that help "
+"becomes available using the command ``!helpme`` (instead of ``!help``)."

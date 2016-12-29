@@ -1,0 +1,114 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2011-2016, Erebot
+# This file is distributed under the same license as the Erebot_Module_Helper package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Erebot_Module_Helper 1.0.x-dev\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-12-29 22:50+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+#
+# File: ../src/Usage.rst, line: 10
+msgid "Usage"
+msgstr "Usage"
+#
+# File: ../src/Usage.rst, line: 12
+msgid ""
+"This section assumes default values are used for all triggers. Please refer "
+"to :ref:`configuration options <configuration options>` for more information "
+"on how to customize triggers."
+msgstr ""
+"This section assumes default values are used for all triggers. Please refer "
+"to :ref:`configuration options <configuration options>` for more information "
+"on how to customize triggers."
+#
+# File: ../src/Usage.rst, line: 19
+msgid "Provided commands"
+msgstr "Provided commands"
+#
+# File: ../src/Usage.rst, line: 21
+msgid "This module provides the following commands:"
+msgstr "This module provides the following commands:"
+#
+# File: ../src/Usage.rst, line: 0
+msgid "Commands provided by |project|"
+msgstr "Commands provided by |project|"
+#
+# File: ../src/Usage.rst, line: 26
+msgid "Command"
+msgstr "Command"
+#
+# File: ../src/Usage.rst, line: 26
+msgid "Description"
+msgstr "Description"
+#
+# File: ../src/Usage.rst, line: 28
+msgid "``!help``"
+msgstr "``!help``"
+#
+# File: ../src/Usage.rst, line: 28
+msgid "Gives a brief summary of usage."
+msgstr "Gives a brief summary of usage."
+#
+# File: ../src/Usage.rst, line: 30
+msgid ":samp:`!help {Module}`"
+msgstr ":samp:`!help {Module}`"
+#
+# File: ../src/Usage.rst, line: 30
+msgid ""
+"Retrieves help on module *Module*. The name of the module **MUST** start with "
+"an uppercase letter."
+msgstr ""
+"Retrieves help on module *Module*. The name of the module **MUST** start with "
+"an uppercase letter."
+#
+# File: ../src/Usage.rst, line: 34
+msgid ":samp:`!help {command}`"
+msgstr ":samp:`!help {command}`"
+#
+# File: ../src/Usage.rst, line: 34
+msgid ""
+"Retrieves help on command *command*. The command's name **MAY NOT** start "
+"with an uppercase letter."
+msgstr ""
+"Retrieves help on command *command*. The command's name **MAY NOT** start "
+"with an uppercase letter."
+#
+# File: ../src/Usage.rst, line: 38
+msgid "``!help Erebot_Module_Helper``"
+msgstr "``!help Erebot_Module_Helper``"
+#
+# File: ../src/Usage.rst, line: 38
+msgid "Displays all available modules."
+msgstr "Displays all available modules."
+#
+# File: ../src/Usage.rst, line: 40
+msgid "``!help help``"
+msgstr "``!help help``"
+#
+# File: ../src/Usage.rst, line: 40
+msgid "Same as if ``!help`` had been used."
+msgstr "Same as if ``!help`` had been used."
+#
+# File: ../src/Usage.rst, line: 45
+msgid "Examples"
+msgstr "Examples"
+#
+# File: ../src/Usage.rst, line: 47
+msgid ""
+"The listing below shows different sessions where commands have been used to "
+"get help on other modules and commands, in the same order as in the :ref:"
+"`array above <commands_provided>`."
+msgstr ""
+"The listing below shows different sessions where commands have been used to "
+"get help on other modules and commands, in the same order as in the :ref:"
+"`array above <commands_provided>`."

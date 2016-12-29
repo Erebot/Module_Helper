@@ -1,0 +1,94 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2011-2016, Erebot
+# This file is distributed under the same license as the Erebot_Module_Helper package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Erebot_Module_Helper 1.0.x-dev\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-12-29 22:50+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../src/Usage.rst:10
+msgid "Usage"
+msgstr ""
+
+#: ../src/Usage.rst:12
+msgid "This section assumes default values are used for all triggers. Please refer to :ref:`configuration options <configuration options>` for more information on how to customize triggers."
+msgstr ""
+
+#: ../src/Usage.rst:19
+msgid "Provided commands"
+msgstr ""
+
+#: ../src/Usage.rst:21
+msgid "This module provides the following commands:"
+msgstr ""
+
+#: ../src/Usage.rst:0
+msgid "Commands provided by |project|"
+msgstr ""
+
+#: ../src/Usage.rst:26
+msgid "Command"
+msgstr ""
+
+#: ../src/Usage.rst:26
+msgid "Description"
+msgstr ""
+
+#: ../src/Usage.rst:28
+msgid "``!help``"
+msgstr ""
+
+#: ../src/Usage.rst:28
+msgid "Gives a brief summary of usage."
+msgstr ""
+
+#: ../src/Usage.rst:30
+msgid ":samp:`!help {Module}`"
+msgstr ""
+
+#: ../src/Usage.rst:30
+msgid "Retrieves help on module *Module*. The name of the module **MUST** start with an uppercase letter."
+msgstr ""
+
+#: ../src/Usage.rst:34
+msgid ":samp:`!help {command}`"
+msgstr ""
+
+#: ../src/Usage.rst:34
+msgid "Retrieves help on command *command*. The command's name **MAY NOT** start with an uppercase letter."
+msgstr ""
+
+#: ../src/Usage.rst:38
+msgid "``!help Erebot_Module_Helper``"
+msgstr ""
+
+#: ../src/Usage.rst:38
+msgid "Displays all available modules."
+msgstr ""
+
+#: ../src/Usage.rst:40
+msgid "``!help help``"
+msgstr ""
+
+#: ../src/Usage.rst:40
+msgid "Same as if ``!help`` had been used."
+msgstr ""
+
+#: ../src/Usage.rst:45
+msgid "Examples"
+msgstr ""
+
+#: ../src/Usage.rst:47
+msgid "The listing below shows different sessions where commands have been used to get help on other modules and commands, in the same order as in the :ref:`array above <commands_provided>`."
+msgstr ""
+
