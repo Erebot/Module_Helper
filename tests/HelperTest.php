@@ -132,7 +132,7 @@ extends Erebot_Testenv_Module_TestCase
         // Register some method to return help for the first fake module.
         $this->_module->realRegisterHelpMethod(
             $this->_fakeModules[0],
-            \Erebot\CallableWrapper::wrap(array($this, 'getFakeHelp'))
+            array($this, 'getFakeHelp')
         );
     }
 

@@ -70,7 +70,7 @@ class Helper extends \Erebot\Module\Base
             }
 
             $this->handler = new \Erebot\EventHandler(
-                \Erebot\CallableWrapper::wrap(array($this, 'handleHelp')),
+                array($this, 'handleHelp'),
                 new \Erebot\Event\Match\All(
                     new \Erebot\Event\Match\Type(
                         '\\Erebot\\Interfaces\\Event\\Base\\TextMessage'
@@ -90,7 +90,7 @@ class Helper extends \Erebot\Module\Base
             // may not be registered for this connection yet.
             $this->realRegisterHelpMethod(
                 $this,
-                \Erebot\CallableWrapper::wrap(array($this, 'getHelp'))
+                array($this, 'getHelp')
             );
         }
     }
@@ -102,7 +102,7 @@ class Helper extends \Erebot\Module\Base
      * \param Erebot::Module::Base $module
      *      The module the method provides help for.
      *
-     * \param Erebot::CallableInterface $callback
+     * \param callable $callback
      *      The method/function to call whenever
      *      someone asks for help on that particular
      *      module or a command provided by it.
@@ -113,16 +113,10 @@ class Helper extends \Erebot\Module\Base
      */
     public function realRegisterHelpMethod(
         \Erebot\Module\Base $module,
-        \Erebot\CallableInterface $callback
+        callable $callback
     ) {
         try {
-            /// @FIXME This is pretty intrusive...
-            $reflector  = new \ReflectionObject($callback);
-            $reflector  = $reflector->getProperty('callable');
-            $reflector->setAccessible(true);
-            $callable   = $reflector->getValue($callback);
-            $reflector->setAccessible(false);
-            $reflector  = new \ReflectionParameter($callable, 0);
+            $reflector  = new \ReflectionParameter($callback, 0);
         } catch (\Exception $e) {
             $bot    = $this->connection->getBot();
             $logger = \Plop\Plop::getInstance();
@@ -130,7 +124,7 @@ class Helper extends \Erebot\Module\Base
             return false;
         }
 
-        $cls        = $reflector->getClass();
+        $cls = $reflector->getClass();
         if ($cls === null || !$cls->implementsInterface(
             '\\Erebot\\Interfaces\\Event\\Base\\MessageCapable'
         )) {
